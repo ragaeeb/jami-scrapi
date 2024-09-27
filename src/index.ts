@@ -1,51 +1,48 @@
-import fs from 'fs';
+import axios from 'axios';
+import process from 'process';
+import { setTimeout } from 'timers/promises';
 
-import { scrape } from './scrapers/index.js';
-import { onTerminate } from './utils/keyboard.js';
+import { URL_ID_PLACEHOLDER } from './constants';
+import { UrlPatternToHandler } from './patterns';
+import { JsonSerializable } from './types';
+import { getRandomWaitTime } from './utils/errors';
+import log from './utils/logger';
 
-export const init = async (id, start, end) => {
-    const pages = [];
+export const scrape = async (start: number, end: number, template: string) => {
+    const result: JsonSerializable[] = [];
+    const handler = UrlPatternToHandler[template];
 
-    const commit = () => {
-        if (pages.length) {
-            // only write if changes were made
-            const file = `data/${id}.json`;
-
-            console.log(`Saving ${pages.length} pages to`, file);
-            const prevPages = fs.existsSync(file) ? JSON.parse(fs.readFileSync(file)) || [] : [];
-            fs.writeFileSync(file, JSON.stringify(prevPages.concat(pages), null, 2));
-        }
-
+    process.on('SIGINT', () => {
+        log.info(`EXIT DETECTED: ${result.length} items`);
         process.exit();
-    };
+    });
 
-    onTerminate(commit);
+    for (let i = start; i <= end; i++) {
+        try {
+            const url = template.replace(URL_ID_PLACEHOLDER, i.toString());
 
-    try {
-        for (let i = start; i <= end; i += 1) {
-            console.log('Trying page', i);
-            // eslint-disable-next-line no-await-in-loop
-            try {
-                // eslint-disable-next-line no-await-in-loop
-                const page = await scrape(id, i);
+            log.info(`Visiting ${url}`);
+            const response = await axios.get(url);
+            const item = handler(response.data);
 
-                if (page.body) {
-                    pages.push({ page: i, ...page });
-                } else {
-                    console.warn('Empty body', i);
-                }
-            } catch (err) {
-                if (err.response.status > 404) {
-                    throw err;
-                }
+            if (item) {
+                result.push(item);
+            } else {
+                log.warn(`Skipping ${url}`);
+            }
+        } catch (error: any) {
+            if (error.code === 'ECONNREFUSED') {
+                const waitTime = getRandomWaitTime(55, 100);
+                log.error(`Rate limiting detected, will retry after ${waitTime / 1000} seconds`);
+                await setTimeout(waitTime);
+                i--;
+            } else if (error.response?.status === 404) {
+                log.warn('404');
+            } else if (error.code === 'InvalidContentType') {
+                log.warn(`Non-HTML content received ${error.message}`);
+            } else {
+                log.error(error);
             }
         }
-    } catch (err) {
-        console.error(err.response.status);
-        console.error(err);
-    } finally {
-        commit();
     }
 };
-
-export default init;

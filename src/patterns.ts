@@ -16,10 +16,11 @@ export const UrlPatternToHandler: Record<string, TargetHandler> = {
     [buildZubairAliZai('tirmizi')]: parseZubairAliZai,
     'http://www.saltaweel.com/articles/{{id}}': parseMainContainer(),
     'https://alathar.net/home/esound/index.php?op=codevi&coid={{id}}': parseAlAtharNet,
-    'https://ferkous.com/home/?q=print/${id}': parseMainContainer('.content'),
+    'https://api.shrajhi.com.sa/api/v2/posts/lesson?limit=5000&page={{id}}': parseMainContainer('.article-body'),
+    'https://ferkous.com/home/?q=print/{{id}}': parseMainContainer('.content'),
     'https://rabee.net/?p={{id}}': parseRabeeNet,
     'https://sh-albarrak.com/article/{{id}}': parseMainContainer('.article-body'),
-    'https://shkhudheir.com/node/{id}}': parseShKhudheir,
+    'https://shkhudheir.com/node/{{id}}': parseShKhudheir,
     'https://www.al-albany.com/audios/content/{{id}}/1': parseAlAtharNet,
 };
 
@@ -28,3 +29,7 @@ const invalidPattern = Object.keys(UrlPatternToHandler).find((url) => !url.inclu
 if (invalidPattern) {
     throw new Error(`${invalidPattern} does not include ${URL_ID_PLACEHOLDER} placeholder`);
 }
+
+/*https://api.shrajhi.com.sa/api/v2/posts/lesson?limit=100&page=24
+https://api.shrajhi.com.sa/api/v2/taxonomies
+https://shrajhi.com.sa/lessons/295 */

@@ -1,10 +1,10 @@
 import { CheerioAPI, load } from 'cheerio';
 
-import { ParsedContent } from './types';
+import { JsonSerializable, ParsedContent } from './types';
 import { runSafely } from './utils/sandbox';
 
-export const parseAlAlbaanyCom = (responseData: string): ParsedContent => {
-    const $: CheerioAPI = load(responseData);
+export const parseAlAlbaanyCom = (responseData: JsonSerializable | string): ParsedContent => {
+    const $: CheerioAPI = load(responseData as string);
     const title = $('.col-lg-10').text().trim();
     const body = $('#contentText').text().trim();
     const book = $('.content-details a:nth-of-type(1)').text().trim();
@@ -15,8 +15,8 @@ export const parseAlAlbaanyCom = (responseData: string): ParsedContent => {
     return { body, book, part, title };
 };
 
-export const parseAlAtharNet = (responseData: string): ParsedContent => {
-    const $: CheerioAPI = load(responseData);
+export const parseAlAtharNet = (responseData: JsonSerializable | string): ParsedContent => {
+    const $: CheerioAPI = load(responseData as string);
     const book = $('div.page-title').text().trim();
     const section = $('div.card-header.block-header').text().trim();
 
@@ -35,15 +35,15 @@ export const parseAlAtharNet = (responseData: string): ParsedContent => {
 
 export const parseMainContainer =
     (selector: string = '#main-container > div') =>
-    (responseData: string): ParsedContent => {
-        const $: CheerioAPI = load(responseData);
+    (responseData: JsonSerializable | string): ParsedContent => {
+        const $: CheerioAPI = load(responseData as string);
         return {
             body: $(selector).text().trim(),
         };
     };
 
-export const parseRabeeNet = (responseData: string): ParsedContent => {
-    const $: CheerioAPI = load(responseData);
+export const parseRabeeNet = (responseData: JsonSerializable | string): ParsedContent => {
+    const $: CheerioAPI = load(responseData as string);
     const content = $('.elementor-element.elementor-element-0dbc278');
     content.find('h3.jp-relatedposts-headline').remove();
     $('div.wrap-maisra_single_downloads_section').find('span').remove();
@@ -54,8 +54,8 @@ export const parseRabeeNet = (responseData: string): ParsedContent => {
     return { body, title };
 };
 
-export const parseShKhudheir = (responseData: string): ParsedContent => {
-    const $: CheerioAPI = load(responseData);
+export const parseShKhudheir = (responseData: JsonSerializable | string): ParsedContent => {
+    const $: CheerioAPI = load(responseData as string);
     const title = $('#block-shkhudheir-page-title').text().trim();
 
     if (/^برنامج نور على الدرب/.test(title)) {
@@ -81,8 +81,12 @@ export const parseShKhudheir = (responseData: string): ParsedContent => {
     };
 };
 
-export const parseZubairAliZai = (responseData: string): ParsedContent => {
-    const sandbox = runSafely(responseData);
+export const parseShRajhi = (responseData: JsonSerializable | string): ParsedContent[] => {
+    return [];
+};
+
+export const parseZubairAliZai = (responseData: JsonSerializable | string): ParsedContent => {
+    const sandbox = runSafely(responseData as string);
     const [{ arabic, description, hukam: hukm }] = Object.values(sandbox);
 
     return { body: arabic, description, hukm };

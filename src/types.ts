@@ -1,5 +1,13 @@
-export type ParsedContent = null | Record<string, number | string>;
+export type JsonSerializable =
+    | { [key: string]: JsonSerializable }
+    | boolean
+    | JsonSerializable[]
+    | null
+    | number
+    | string;
+
+export type ParsedContent = null | Record<string, JsonSerializable>;
 
 export type TargetHandler = {
-    (responseData: string): ParsedContent;
+    (responseData: JsonSerializable | string): ParsedContent | ParsedContent[];
 };

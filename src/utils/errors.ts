@@ -1,9 +1,7 @@
-import { JsonSerializable } from '../types';
-
 export class ProgressError extends Error {
-    progressData: JsonSerializable;
+    progressData: any;
 
-    constructor(message: string, progressData: JsonSerializable, originalError: any) {
+    constructor(message: string, progressData: any, originalError: any) {
         super(message);
         this.name = 'ProgressError';
 
@@ -16,3 +14,9 @@ export class ProgressError extends Error {
         }
     }
 }
+
+export const getRandomWaitTime = (minSeconds: number, maxSeconds: number) => {
+    const minMilliseconds = minSeconds * 1000;
+    const maxMilliseconds = maxSeconds * 1000;
+    return Math.floor(Math.random() * (maxMilliseconds - minMilliseconds + 1)) + minMilliseconds;
+};
