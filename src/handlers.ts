@@ -1,8 +1,10 @@
 import { CheerioAPI, load } from 'cheerio';
 
 import { ParsedContent } from './types';
+import { runSafely } from './utils/sandbox';
 
-export const parseAlAlbaanyCom = ($: CheerioAPI): ParsedContent => {
+export const parseAlAlbaanyCom = (responseData: string): ParsedContent => {
+    const $: CheerioAPI = load(responseData);
     const title = $('.col-lg-10').text().trim();
     const body = $('#contentText').text().trim();
     const book = $('.content-details a:nth-of-type(1)').text().trim();
@@ -13,7 +15,8 @@ export const parseAlAlbaanyCom = ($: CheerioAPI): ParsedContent => {
     return { body, book, part, title };
 };
 
-export const parseAlAtharNet = ($: CheerioAPI): ParsedContent => {
+export const parseAlAtharNet = (responseData: string): ParsedContent => {
+    const $: CheerioAPI = load(responseData);
     const book = $('div.page-title').text().trim();
     const section = $('div.card-header.block-header').text().trim();
 
@@ -32,13 +35,15 @@ export const parseAlAtharNet = ($: CheerioAPI): ParsedContent => {
 
 export const parseMainContainer =
     (selector: string = '#main-container > div') =>
-    ($: CheerioAPI): ParsedContent => {
+    (responseData: string): ParsedContent => {
+        const $: CheerioAPI = load(responseData);
         return {
             body: $(selector).text().trim(),
         };
     };
 
-export const parseRabeeNet = ($: CheerioAPI): ParsedContent => {
+export const parseRabeeNet = (responseData: string): ParsedContent => {
+    const $: CheerioAPI = load(responseData);
     const content = $('.elementor-element.elementor-element-0dbc278');
     content.find('h3.jp-relatedposts-headline').remove();
     $('div.wrap-maisra_single_downloads_section').find('span').remove();
@@ -49,7 +54,8 @@ export const parseRabeeNet = ($: CheerioAPI): ParsedContent => {
     return { body, title };
 };
 
-export const parseShKhudheir = ($: CheerioAPI): ParsedContent => {
+export const parseShKhudheir = (responseData: string): ParsedContent => {
+    const $: CheerioAPI = load(responseData);
     const title = $('#block-shkhudheir-page-title').text().trim();
 
     if (/^برنامج نور على الدرب/.test(title)) {
@@ -73,4 +79,11 @@ export const parseShKhudheir = ($: CheerioAPI): ParsedContent => {
             : (article.text() || body.text()).trim(),
         title,
     };
+};
+
+export const parseZubairAliZai = (responseData: string): ParsedContent => {
+    const sandbox = runSafely(responseData);
+    const [{ arabic, description, hukam: hukm }] = Object.values(sandbox);
+
+    return { body: arabic, description, hukm };
 };
