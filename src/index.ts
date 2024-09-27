@@ -25,8 +25,10 @@ export const scrape = async (start: number, end: number, template: string) => {
             const response = await axios.get(url);
             const item = handler(response.data);
 
-            if (item) {
-                result.push(item);
+            if (Array.isArray(item)) {
+                result.push(...item);
+            } else if (item) {
+                result.push({ ...item, id: i });
             } else {
                 log.warn(`Skipping ${url}`);
             }

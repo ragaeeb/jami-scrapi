@@ -1,12 +1,6 @@
-export type JsonSerializable =
-    | { [key: string]: JsonSerializable }
-    | boolean
-    | JsonSerializable[]
-    | null
-    | number
-    | string;
+export type JsonSerializable = { [key: string]: any };
 
-export type ParsedContent = null | Record<string, JsonSerializable>;
+export type ParsedContent = null | Record<string, any>;
 
 export type TargetHandler = {
     (responseData: JsonSerializable | string): ParsedContent | ParsedContent[];

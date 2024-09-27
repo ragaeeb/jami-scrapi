@@ -81,8 +81,35 @@ export const parseShKhudheir = (responseData: JsonSerializable | string): Parsed
     };
 };
 
+export interface PostData {
+    content: {
+        ar: {
+            body: string;
+            title: string;
+            updatedAt: number;
+        };
+    };
+    id: number;
+}
+
 export const parseShRajhi = (responseData: JsonSerializable | string): ParsedContent[] => {
-    return [];
+    const parsedContents: ParsedContent[] = ((responseData as JsonSerializable).data as PostData[]).map(
+        ({
+            content: {
+                ar: { body, title, updatedAt },
+            },
+            id,
+        }: PostData) => {
+            return {
+                body: load(body).text().trim(),
+                id,
+                title,
+                updatedAt,
+            };
+        },
+    );
+
+    return parsedContents;
 };
 
 export const parseZubairAliZai = (responseData: JsonSerializable | string): ParsedContent => {
