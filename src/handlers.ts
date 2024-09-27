@@ -30,11 +30,13 @@ export const parseAlAtharNet = ($: CheerioAPI): ParsedContent => {
     return { body, book, section, title };
 };
 
-export const parseMainContainer = ($: CheerioAPI): ParsedContent => {
-    return {
-        body: $('#main-container > div').text().trim(),
+export const parseMainContainer =
+    (selector: string = '#main-container > div') =>
+    ($: CheerioAPI): ParsedContent => {
+        return {
+            body: $(selector).text().trim(),
+        };
     };
-};
 
 export const parseRabeeNet = ($: CheerioAPI): ParsedContent => {
     const content = $('.elementor-element.elementor-element-0dbc278');
@@ -45,12 +47,6 @@ export const parseRabeeNet = ($: CheerioAPI): ParsedContent => {
     const title = $('h1.elementor-heading-title.elementor-size-default').text().trim();
 
     return { body, title };
-};
-
-export const parseShAlBarrak = ($: CheerioAPI): ParsedContent => {
-    return {
-        body: $('.article-body').text().trim(),
-    };
 };
 
 export const parseShKhudheir = ($: CheerioAPI): ParsedContent => {
