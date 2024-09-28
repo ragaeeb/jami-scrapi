@@ -74,6 +74,14 @@ export const parseRabeeNet = (responseData: ResponseData): Partial<Page> => {
 
 export const parseSalTaweel = parseArticle;
 
+/**
+ * https://sh-albarrak.com/robots.txt
+ * https://sh-albarrak.com/api/posts/BookExplanationSeries
+ * https://sh-albarrak.com/sitemaps/fatwas
+ * https://sh-albarrak.com/api/posts/Fatwa
+ * https://sh-albarrak.com/_next/data/0Dw_mPO0cum1WzT4PjpmM/fatwas/30278.json
+ * https://sh-albarrak.com/_next/data/0Dw_mPO0cum1WzT4PjpmM/books-explanations/lessons/29106.json
+ */
 export const parseShAlBarrak = parseArticle;
 
 export const parseShKhudheir = (responseData: ResponseData): null | Partial<Page> => {
