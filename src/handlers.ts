@@ -12,7 +12,7 @@ export const parseAlAlbaanyCom = (responseData: ResponseData): Partial<Page> => 
         .text()
         .trim();
 
-    return { body, bookName, part: parseInt(part), title };
+    return { ...(body && { body }), ...(bookName && { bookName }), part: parseInt(part), ...(title && { title }) };
 };
 
 export const parseAlAtharNet = (responseData: ResponseData): Partial<Page> => {
@@ -31,17 +31,22 @@ export const parseAlAtharNet = (responseData: ResponseData): Partial<Page> => {
     const bodyWithLineBreaks = bodyHtml?.replace(/<br\s*\/?>/gi, '\n');
     const body = bodyWithLineBreaks ? load(bodyWithLineBreaks).text().trim() : '';
 
-    return { body, bookName, chapterName, metadata: { author }, title };
+    return { ...(body && { body }), bookName, chapterName, metadata: { author }, title };
 };
 
-export const parseMainContainer =
-    (selector: string = '#main-container > div') =>
-    (responseData: ResponseData): Partial<Page> => {
-        const $: CheerioAPI = load(responseData as string);
-        return {
-            body: $(selector).text().trim(),
-        };
+const parseArticle = (responseData: ResponseData, selector: string = 'article'): Partial<Page> => {
+    const $: CheerioAPI = load(responseData as string);
+    const body = $(selector).text().trim();
+    return {
+        ...(body && { body }),
     };
+};
+
+export const parseAlBadrNet = parseArticle;
+
+export const parseFerkous = (responseData: ResponseData): Partial<Page> => {
+    return parseArticle(responseData, '.content');
+};
 
 export const parseRabeeNet = (responseData: ResponseData): Partial<Page> => {
     const $: CheerioAPI = load(responseData as string);
@@ -52,8 +57,12 @@ export const parseRabeeNet = (responseData: ResponseData): Partial<Page> => {
     const body = content.text().trim();
     const title = $('h1.elementor-heading-title.elementor-size-default').text().trim();
 
-    return { body, title };
+    return { ...(body && { body }), ...(title && { title }) };
 };
+
+export const parseSalTaweel = parseArticle;
+
+export const parseShAlBarrak = parseArticle;
 
 export const parseShKhudheir = (responseData: ResponseData): null | Partial<Page> => {
     const $: CheerioAPI = load(responseData as string);
@@ -66,20 +75,19 @@ export const parseShKhudheir = (responseData: ResponseData): null | Partial<Page
     const question = $(
         '#block-shkhudheir-content > div > div > article > div > div > div > div.field.field--name-field-fatwa-question.field--type-string-long.field--label-above > div.field__item',
     );
-    const body = $('#block-shkhudheir-content');
+    const bodyTag = $('#block-shkhudheir-content');
     const answer = $(
         '#block-shkhudheir-content > div > div > article > div > div > div > div.clearfix.text-formatted.field.field--name-field-fatwa-answer.field--type-text-long.field--label-above > div.field__item',
     );
     const article = $('#quicktabs-tabpage-lesson_tabs-0 > div:nth-child(2) > div > div > div > div > div > div > div');
 
-    body.find('.audiofield-player').remove();
+    bodyTag.find('.audiofield-player').remove();
 
-    return {
-        body: question.text()
-            ? [question.text().trim(), answer.text().trim()].join('\n').trim()
-            : (article.text() || body.text()).trim(),
-        title,
-    };
+    const body = question.text()
+        ? [question.text().trim(), answer.text().trim()].join('\n').trim()
+        : (article.text() || bodyTag.text()).trim();
+
+    return { ...(body && { body }), ...(title && { title }) };
 };
 
 export interface PostData {
@@ -119,5 +127,5 @@ export const parseZubairAliZai = (responseData: ResponseData): Partial<Page> => 
     const sandbox = runSafely(responseData as string);
     const [{ arabic, description = '', hukam: hukm = '' }] = Object.values(sandbox);
 
-    return { body: arabic, footer: [description, hukm].filter(Boolean).join('\n') };
+    return { ...(arabic && { body: arabic }), footer: [description, hukm].filter(Boolean).join('\n') };
 };
