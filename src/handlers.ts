@@ -1,24 +1,24 @@
 import { CheerioAPI, load } from 'cheerio';
 
-import { JsonSerializable, ParsedContent } from './types';
+import { Page, ResponseData } from './types';
 import { runSafely } from './utils/sandbox';
 
-export const parseAlAlbaanyCom = (responseData: JsonSerializable | string): ParsedContent => {
+export const parseAlAlbaanyCom = (responseData: ResponseData): Partial<Page> => {
     const $: CheerioAPI = load(responseData as string);
     const title = $('.col-lg-10').text().trim();
     const body = $('#contentText').text().trim();
-    const book = $('.content-details a:nth-of-type(1)').text().trim();
+    const bookName = $('.content-details a:nth-of-type(1)').text().trim();
     const part = $('body > div.container > div.content > div.content-details > ul > li:nth-child(1) > a:nth-child(4)')
         .text()
         .trim();
 
-    return { body, book, part, title };
+    return { body, bookName, part: parseInt(part), title };
 };
 
-export const parseAlAtharNet = (responseData: JsonSerializable | string): ParsedContent => {
+export const parseAlAtharNet = (responseData: ResponseData): Partial<Page> => {
     const $: CheerioAPI = load(responseData as string);
-    const book = $('div.page-title').text().trim();
-    const section = $('div.card-header.block-header').text().trim();
+    const bookName = $('div.page-title').text().trim();
+    const chapterName = $('div.card-header.block-header').text().trim();
 
     const title = $('body > div > div > div:nth-child(1) > div > div.card.mb-4 > div.card-body > div:nth-child(1)')
         .children()
@@ -30,19 +30,19 @@ export const parseAlAtharNet = (responseData: JsonSerializable | string): Parsed
     const bodyWithLineBreaks = bodyHtml?.replace(/<br\s*\/?>/gi, '\n');
     const body = bodyWithLineBreaks ? load(bodyWithLineBreaks).text().trim() : '';
 
-    return { body, book, section, title };
+    return { body, bookName, chapterName, title };
 };
 
 export const parseMainContainer =
     (selector: string = '#main-container > div') =>
-    (responseData: JsonSerializable | string): ParsedContent => {
+    (responseData: ResponseData): Partial<Page> => {
         const $: CheerioAPI = load(responseData as string);
         return {
             body: $(selector).text().trim(),
         };
     };
 
-export const parseRabeeNet = (responseData: JsonSerializable | string): ParsedContent => {
+export const parseRabeeNet = (responseData: ResponseData): Partial<Page> => {
     const $: CheerioAPI = load(responseData as string);
     const content = $('.elementor-element.elementor-element-0dbc278');
     content.find('h3.jp-relatedposts-headline').remove();
@@ -54,7 +54,7 @@ export const parseRabeeNet = (responseData: JsonSerializable | string): ParsedCo
     return { body, title };
 };
 
-export const parseShKhudheir = (responseData: JsonSerializable | string): ParsedContent => {
+export const parseShKhudheir = (responseData: ResponseData): null | Partial<Page> => {
     const $: CheerioAPI = load(responseData as string);
     const title = $('#block-shkhudheir-page-title').text().trim();
 
@@ -92,29 +92,31 @@ export interface PostData {
     id: number;
 }
 
-export const parseShRajhi = (responseData: JsonSerializable | string): ParsedContent[] => {
-    const parsedContents: ParsedContent[] = ((responseData as JsonSerializable).data as PostData[]).map(
-        ({
-            content: {
-                ar: { body, title, updatedAt },
-            },
-            id,
-        }: PostData) => {
-            return {
-                body: load(body).text().trim(),
+export const parseShRajhi = (responseData: ResponseData): Page[] => {
+    const parsedContents: Page[] = ((responseData as any).data as PostData[])
+        .map(
+            ({
+                content: {
+                    ar: { body, title, updatedAt },
+                },
                 id,
-                title,
-                updatedAt,
-            };
-        },
-    );
+            }: PostData) => {
+                return {
+                    ...(body && { body: load(body).text().trim() }),
+                    id,
+                    sourceUpdatedAt: updatedAt,
+                    title,
+                };
+            },
+        )
+        .reverse();
 
     return parsedContents;
 };
 
-export const parseZubairAliZai = (responseData: JsonSerializable | string): ParsedContent => {
+export const parseZubairAliZai = (responseData: ResponseData): Partial<Page> => {
     const sandbox = runSafely(responseData as string);
-    const [{ arabic, description, hukam: hukm }] = Object.values(sandbox);
+    const [{ arabic, description = '', hukam: hukm = '' }] = Object.values(sandbox);
 
-    return { body: arabic, description, hukm };
+    return { body: arabic, footer: `${description}\n${hukm}}` };
 };

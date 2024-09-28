@@ -1,7 +1,16 @@
-export type JsonSerializable = { [key: string]: any };
+export type ResponseData = { [key: string]: any } | string;
 
-export type ParsedContent = null | Record<string, any>;
+export interface Page {
+    body?: string;
+    bookName?: string;
+    chapterName?: string;
+    footer?: string;
+    id: number;
+    part?: number;
+    sourceUpdatedAt?: number;
+    title?: string;
+}
 
 export type TargetHandler = {
-    (responseData: JsonSerializable | string): ParsedContent | ParsedContent[];
+    (responseData: ResponseData): null | Page[] | Partial<Page>;
 };

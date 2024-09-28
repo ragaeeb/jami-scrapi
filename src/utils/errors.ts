@@ -14,9 +14,3 @@ export class ProgressError extends Error {
         }
     }
 }
-
-export const getRandomWaitTime = (minSeconds: number, maxSeconds: number) => {
-    const minMilliseconds = minSeconds * 1000;
-    const maxMilliseconds = maxSeconds * 1000;
-    return Math.floor(Math.random() * (maxMilliseconds - minMilliseconds + 1)) + minMilliseconds;
-};

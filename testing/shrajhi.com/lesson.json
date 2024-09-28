@@ -1,0 +1,102 @@
+{
+    "total": 4873,
+    "limit": 2,
+    "currentPage": 2200,
+    "nextPageUrl": "https://api.shrajhi.com.sa/api/v2/posts/lesson?page=2201",
+    "previousPageUrl": "https://api.shrajhi.com.sa/api/v2/posts/lesson?page=2199",
+    "lastPageUrl": 2437,
+    "data": [
+        {
+            "id": 691,
+            "reference": 491,
+            "type": "lesson",
+            "order": 491,
+            "content": {
+                "ar": {
+                    "title": "الرسالة المدنية 11 من قوله: \"ذكر قول الإمام أبي القاسم عبد الله بن خلف المغربي الأندلسي\". إلى آخر الرسالة.",
+                    "body": "<p style=\"text-align: justify;\"><strong>جواب الشيخ :</strong></p>\r\n\r\n<p style=\"text-align: justify;\">أقر شيخ الإسلام ابن تيمية رحمه الله أنه لا يوجد أحد أقر بالمجاز لا من الأئمة الأربعة و لا غيرهم ما وجد إلا كلمة من الإمام أحمد أخذوا بها قال : هذا من كلام المجاز و ليس مقصده المجاز مقصده مما يجوز من كلام فتعلق بها بعض الناس و قال بالمجاز و المجاز ليس معروفا في اللغة و لا عند الصحابة جاء من عند المتأخرين أحدثوه فصار سلما للجهمية و المعتزلة في تأويل الصفات و إنكارها .</p>\r\n\r\n<p style=\"text-align: justify;\"><strong>سؤال :</strong></p>\r\n\r\n<p style=\"text-align: justify;\">ما الفرق بين جواز الاستعاذة بصفات الله نحو أعوذ برضاك و نحو عدم جواز دعاء الصفة و أنه شرك مع أن الاستعاذة هي نوع من أنواع الدعاء؟</p>\r\n\r\n<p style=\"text-align: justify;\"><strong>جواب الشيخ :</strong></p>\r\n\r\n<p style=\"text-align: justify;\">الفرق , النصوص جاءت بهذا <strong><span class=\"hadith\">أعوذ برضاك من سخطك</span></strong>&nbsp;<strong><span class=\"hadith\">أعوذ بنور وجهك الذي أسفرت به الظلمات</span></strong>&nbsp;و لأن <strong><span class=\"hadith\">أعوذ برضاك من سخطك</span></strong>&nbsp;هذا خطاب , خطاب الله و أنت تستعيذ به و بصفته لكن الدعاء هذا دعاء الصفة وحدها تدعوا الصفة وحدها و تخاطب الله بالأنثى تقول يا رحمة الله ارحميني يا قدرة الله أنقذيني هذا لا يجوز , حتى قال شيخ الإسلام أنه كفر و ردة, أما الاستعاذة بالصفات <strong><span class=\"hadith\">أعوذ برضاك من سخطك</span></strong> <strong><span class=\"hadith\">أعوذ بنور وجهك</span></strong>, تخاطب الله متصفا بالصفات, أما مناداة الصفة هذا كأنه يخاطب الله باسم الأنثى يقول يا رحمة الله ارحميني يا قدرة الله أنقذيني يا وجه الله, فصل الصفة عن الموصوف بعض الناس يقول يا وجه الله هذا غلط لا تنادى الصفة .</p>",
+                    "description": null,
+                    "attachments": [
+                        {
+                            "id": 593,
+                            "diskName": "الرسالة المدنية 11.mp3",
+                            "fileName": "الرسالة المدنية 11.mp3",
+                            "type": "audio",
+                            "size": 54008329,
+                            "mimeType": "audio/mpeg",
+                            "link": "https://files.zadapps.info/shrajhi.com.sa/aldoros-alilmiyah/alaqeedah/alolohiyyah-wa-alrobobiah/alrisalah-almadaniah/الرسالة المدنية 11.mp3",
+                            "thumbnail": null,
+                            "thumbnailLink": null,
+                            "title": null,
+                            "description": null,
+                            "createdAt": 1532985272,
+                            "updatedAt": 1564615373
+                        }
+                    ],
+                    "published": true,
+                    "createdAt": 1532974472,
+                    "updatedAt": 1572371888
+                }
+            },
+            "media": [],
+            "taxonomies": null,
+            "relations": null,
+            "contentLangs": ["ar"],
+            "publish_date": null,
+            "categorization": false,
+            "formating": true,
+            "first_review": false,
+            "second_review": false,
+            "views": "95",
+            "published": true,
+            "createdAt": 1532974472,
+            "updatedAt": 1586071969
+        },
+        {
+            "id": 690,
+            "reference": 490,
+            "type": "lesson",
+            "order": 490,
+            "content": {
+                "ar": {
+                    "title": "الرسالة المدنية 10 من قوله: \"ذكر قول شيخ الإسلام أبي عثمان إسماعيل بن عبد الرحمن النيسابوري الصابوني\". إلى قوله: \"ذكر قول الإمام العالم العلامة حافظ المغرب إمام السنة في زمان أبي عمر يوسف بن عبد الله بن عبد البر النمري الأندلسي\".",
+                    "body": "<p style=\"text-align: justify;\"><strong>سؤال :</strong></p>\r\n\r\n<p style=\"text-align: justify;\">ما الفرق بين الجهمية المتقدمة الذين يقولون إن الله في كل مكان و بين الأشاعرة المتقدمة؟</p>\r\n\r\n<p style=\"text-align: justify;\"><strong>جواب الشيخ:</strong></p>\r\n\r\n<p style=\"text-align: justify;\">الأشاعرة القدامى مثل أبي الحسن الأشعري و مثل القاضي الباقلاني لا يثبتون الاستواء يفسرون الاستواء بالقدرة و لكن ما يقولون إن الله في كل مكان, أما المتأخرون من الأشاعرة فإنهم صاروا جهمية مثل الرازي و غيره لكن الرازي رجع فهم جهمية معتزلة جهمية فصاروا ينكرون علو الله على خلقه و يقولون إنه في كل مكان هذا هو الفرق الأشاعرة الأولى لا يثبتون العلو و لا يقولون إن الله في كل مكان يفسرون الاستواء بالقدرة و الأشاعرة المتأخرون صاروا مع الجهمية فصاروا يقولون بالحلول .</p>\r\n\r\n<p style=\"text-align: justify;\"><strong>سؤال :</strong></p>\r\n\r\n<p style=\"text-align: justify;\">ما حكم لبس الساعة المطلية بالذهب؟</p>\r\n\r\n<p style=\"text-align: justify;\"><strong>جواب الشيخ :</strong></p>\r\n\r\n<p style=\"text-align: justify;\">لا يجوز للرجل أن يلبس الساعة المطلية بالذهب أو الفضة قال العلماء لا يجوز الشرب في آنية الذهب و الفضة و المضابة بهما, و كذلك الاستعمال استعمال الساعة و القلم و النظارة لا للرجل و لا للمرأة إلا المرأة تتحلى بالذهب في يديها و رجليها و عنقها و أنفها و أذنها و صدرها خاصة لكن ما تستعمل المرأة كأس الذهب و لا نظارة الذهب و لا قلم الذهب و لا ملاعق الذهب ما تستعملها هذا حرام على الرجل و على المرأة قال النبي ﷺ &nbsp;<strong><span class=\"hadith\">لا تشربوا في آنية الذهب والفضة، ولا تأكلوا في صحافها؛ فإنها لم في الدنيا</span></strong>&nbsp;يعني للكفرة <strong><span class=\"hadith\">ولكم في الآخرة</span></strong>.</p>\r\n\r\n<p style=\"text-align: justify;\"><strong>سؤال :</strong></p>\r\n\r\n<p style=\"text-align: justify;\">يسأل عن مسألة البيوع يقول إنه في بعض الدول يتم بيع مساحة من البحر محدودة للصيد منها فقط فما حكم هذه الصورة؟</p>\r\n\r\n<p style=\"text-align: justify;\"><strong>جواب الشيخ:</strong></p>\r\n\r\n<p style=\"text-align: justify;\">هذا السؤال يوجه لهذه الجهة الذين يقومون ببيع هذه الجهة أن يوجهوا السؤال للجنة الدائمة للإفتاء حتى تصدر فيه فتوى جماعية لأن هذه ما تخص شخصا تخص دولة و جماعة فلا يكون فيها فتوى فردية بل فتوى جماعية جهة رسمية حتى يعلموا حكم الله ثم بعد ذلك إن شاؤوا عملوا و إن شاؤوا لم يعملوا الله هو الذي يحاسبهم .</p>\r\n\r\n<p style=\"text-align: justify;\"><strong>سؤال :</strong></p>\r\n\r\n<p style=\"text-align: justify;\">هل كل من يصرح بوحدة الوجود هل يلزم من الحكم عليه بالردة إقامة الحجة و إزالة الشبهة؟</p>\r\n\r\n<p style=\"text-align: justify;\">جواب الشيخ:</p>\r\n\r\n<p style=\"text-align: justify;\">لا , الحجة قائمة عليه هذا كفر غليظ و كفر ظاهر, هذا لا يستتاب هذا مثل ما قال أهل العلم يقتل من غير استتابة حتى لو ادعى التوبة لا تقبل توبته في الدنيا لأن كفره غليظ, من سب الله و سب رسوله&nbsp;ﷺ و استهزأ بالله و بكتابه و قال بوحدة الوجود, هذا يضرب عنقه في الحال و لو قال إنه تاب لا يقبل في الدنيا لكن إذا كان صادقا تقبل في الآخرة لكن في الدنيا ما تقبل لماذا ! حتى لا يتجرأ الناس على الكفر الغليظ هذا كفر غليظ حتى لا يتجرأ الناس على هذا يقتل و لا تقبل توبته في صحيح قول العلماء كما أقره الشيخ ابن تيمية في كتابه الصارم المسلول على شاتم الرسول.</p>\r\n\r\n<p style=\"text-align: justify;\">أما أنواع الكفر الأخرى فإنها يستتاب فإن تاب و إلا قتل.</p>\r\n\r\n<p style=\"text-align: justify;\">و قال آخرون من أهل العلم إن الحكم واحد أنه يستتاب في هذا لكن المعتمد عند المحققين الأول لأنه كفر غليظ لا يستتاب مثل من سب الله أو سب الرسول&nbsp;ﷺ أو سب دين الإسلام أو استهزأ بالله أو بكتابه أو الرسول&nbsp;ﷺ أو تكررت ردته أو قال بوحدة الوجود, هذا يقتل و لا تقبل توبته في الدنيا لكنها تقبل في الآخرة إذا كان صادقا فالله يقبل توبة الصادقين و إن كان كاذبا فله حكم الكاذبين .</p>",
+                    "description": null,
+                    "attachments": [
+                        {
+                            "id": 592,
+                            "diskName": "الرسالة المدنية 10.mp3",
+                            "fileName": "الرسالة المدنية 10.mp3",
+                            "type": "audio",
+                            "size": 20869657,
+                            "mimeType": "audio/mpeg",
+                            "link": "https://files.zadapps.info/shrajhi.com.sa/aldoros-alilmiyah/alaqeedah/alolohiyyah-wa-alrobobiah/alrisalah-almadaniah/الرسالة المدنية 10.mp3",
+                            "thumbnail": null,
+                            "thumbnailLink": null,
+                            "title": null,
+                            "description": null,
+                            "createdAt": 1532985241,
+                            "updatedAt": 1564615373
+                        }
+                    ],
+                    "published": true,
+                    "createdAt": 1532974440,
+                    "updatedAt": 1572290615
+                }
+            },
+            "media": [],
+            "taxonomies": null,
+            "relations": null,
+            "contentLangs": ["ar"],
+            "publish_date": null,
+            "categorization": false,
+            "formating": true,
+            "first_review": false,
+            "second_review": false,
+            "views": "106",
+            "published": true,
+            "createdAt": 1532974440,
+            "updatedAt": 1587531583
+        }
+    ]
+}
