@@ -8,6 +8,7 @@ import {
     parseFerkous,
     parseSalTaweel,
     parseShAlBarrak,
+    parseShKhudheir,
     parseShRajhi,
     parseZubairAliZai,
 } from './handlers';
@@ -47,6 +48,18 @@ describe('handlers', () => {
                 chapterName: 'كتاب الصيام والإعتكاف-02b',
                 metadata: { author: 'الشيخ محمد بن صالح العثيمين' },
                 title: expect.any(String),
+            });
+        });
+    });
+
+    describe('parseShKhudheir', () => {
+        it('should handle request', async () => {
+            const html = await fs.readFile('testing/shkhudheir.com/2222.html', 'utf-8');
+            const actual = parseShKhudheir(html);
+
+            expect(actual).toEqual({
+                body: expect.any(String),
+                title: 'مِن أَعظَمِ المِنَن على المُسلِم',
             });
         });
     });
