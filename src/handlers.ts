@@ -42,7 +42,19 @@ const parseArticle = (responseData: ResponseData, selector: string = 'article'):
     };
 };
 
-export const parseAlBadrNet = parseArticle;
+export const parseAlBadrNet = (responseData: ResponseData): null | Partial<Page> => {
+    const $: CheerioAPI = load(responseData as string);
+    const description = $('meta[name="Description"]').attr('content') as string;
+
+    if (description === '404') {
+        return null;
+    }
+
+    const body = $('article').text().trim();
+    return {
+        ...(body && { body }),
+    };
+};
 
 export const parseFerkous = (responseData: ResponseData): Partial<Page> => {
     return parseArticle(responseData, '.content');

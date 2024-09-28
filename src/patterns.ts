@@ -14,7 +14,6 @@ import { TargetHandler } from './types';
 
 export const UrlPatternToHandler: Record<string, TargetHandler> = {
     'http://www.saltaweel.com/articles/{{id}}': parseSalTaweel,
-    'https://al-badr.net/detail/{{id}}': parseAlBadrNet,
     'https://al-badr.net/muqolat/{{id}}': parseAlBadrNet,
     'https://alathar.net/home/esound/index.php?op=codevi&coid={{id}}': parseAlAtharNet,
     'https://api.shrajhi.com.sa/api/v2/posts/lesson?limit=5000&page={{id}}': parseShRajhi,

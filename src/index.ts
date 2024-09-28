@@ -11,9 +11,9 @@ export const getUrlPatterns = (): string[] => {
     return Object.keys(UrlPatternToHandler);
 };
 
-export const scrape = async (start: number, end: number, template: string): Promise<Page[]> => {
+export const scrape = async (start: number, end: number, urlTemplate: string): Promise<Page[]> => {
     const result: Page[] = [];
-    const handler = UrlPatternToHandler[template];
+    const handler = UrlPatternToHandler[urlTemplate];
 
     process.on('SIGINT', () => {
         log.warn(`User Interrupt detected: ${result.length} items`);
@@ -22,7 +22,7 @@ export const scrape = async (start: number, end: number, template: string): Prom
 
     for (let i = start; i <= end; i++) {
         try {
-            const url = template.replace(URL_ID_PLACEHOLDER, i.toString());
+            const url = urlTemplate.replace(URL_ID_PLACEHOLDER, i.toString());
 
             log.info(`Visiting ${url}`);
             const response = await axios.get(url);
