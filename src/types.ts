@@ -6,6 +6,7 @@ export interface Page {
     chapterName?: string;
     footer?: string;
     id: number;
+    metadata?: any;
     part?: number;
     sourceUpdatedAt?: number;
     title?: string;

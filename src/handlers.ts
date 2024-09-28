@@ -17,7 +17,8 @@ export const parseAlAlbaanyCom = (responseData: ResponseData): Partial<Page> => 
 
 export const parseAlAtharNet = (responseData: ResponseData): Partial<Page> => {
     const $: CheerioAPI = load(responseData as string);
-    const bookName = $('div.page-title').text().trim();
+    const author = $('div.page-title > a:nth-child(1)').text().trim();
+    const bookName = $('div.page-title > a:nth-child(2)').text().trim();
     const chapterName = $('div.card-header.block-header').text().trim();
 
     const title = $('body > div > div > div:nth-child(1) > div > div.card.mb-4 > div.card-body > div:nth-child(1)')
@@ -30,7 +31,7 @@ export const parseAlAtharNet = (responseData: ResponseData): Partial<Page> => {
     const bodyWithLineBreaks = bodyHtml?.replace(/<br\s*\/?>/gi, '\n');
     const body = bodyWithLineBreaks ? load(bodyWithLineBreaks).text().trim() : '';
 
-    return { body, bookName, chapterName, title };
+    return { body, bookName, chapterName, metadata: { author }, title };
 };
 
 export const parseMainContainer =
@@ -118,5 +119,5 @@ export const parseZubairAliZai = (responseData: ResponseData): Partial<Page> => 
     const sandbox = runSafely(responseData as string);
     const [{ arabic, description = '', hukam: hukm = '' }] = Object.values(sandbox);
 
-    return { body: arabic, footer: `${description}\n${hukm}}` };
+    return { body: arabic, footer: [description, hukm].filter(Boolean).join('\n') };
 };
