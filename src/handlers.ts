@@ -1,7 +1,6 @@
 import { CheerioAPI, load } from 'cheerio';
 
 import { Page, ResponseData } from './types';
-import { runSafely } from './utils/sandbox';
 
 export const parseAlAlbaanyCom = (responseData: ResponseData): Partial<Page> => {
     const $: CheerioAPI = load(responseData as string);
@@ -13,25 +12,6 @@ export const parseAlAlbaanyCom = (responseData: ResponseData): Partial<Page> => 
         .trim();
 
     return { ...(body && { body }), ...(bookName && { bookName }), part: parseInt(part), ...(title && { title }) };
-};
-
-export const parseAlAtharNet = (responseData: ResponseData): Partial<Page> => {
-    const $: CheerioAPI = load(responseData as string);
-    const author = $('div.page-title > a:nth-child(1)').text().trim();
-    const bookName = $('div.page-title > a:nth-child(2)').text().trim();
-    const chapterName = $('div.card-header.block-header').text().trim();
-
-    const title = $('body > div > div > div:nth-child(1) > div > div.card.mb-4 > div.card-body > div:nth-child(1)')
-        .children()
-        .not('a')
-        .text()
-        .trim();
-
-    const bodyHtml = $('div.text-justify').html();
-    const bodyWithLineBreaks = bodyHtml?.replace(/<br\s*\/?>/gi, '\n');
-    const body = bodyWithLineBreaks ? load(bodyWithLineBreaks).text().trim() : '';
-
-    return { ...(body && { body }), bookName, chapterName, metadata: { author }, title };
 };
 
 const parseArticle = (responseData: ResponseData, selector: string = 'article'): Partial<Page> => {
@@ -74,15 +54,6 @@ export const parseRabeeNet = (responseData: ResponseData): Partial<Page> => {
 
 export const parseSalTaweel = parseArticle;
 
-/**
- * https://sh-albarrak.com/robots.txt
- * https://sh-albarrak.com/api/posts/BookExplanationSeries
- * https://sh-albarrak.com/sitemaps/fatwas
- * https://sh-albarrak.com/api/posts/Fatwa
- * https://sh-albarrak.com/_next/data/0Dw_mPO0cum1WzT4PjpmM/fatwas/30278.json
- * https://sh-albarrak.com/_next/data/0Dw_mPO0cum1WzT4PjpmM/books-explanations/lessons/29106.json
- */
-export const parseShAlBarrak = parseArticle;
 
 export const parseShKhudheir = (responseData: ResponseData): null | Partial<Page> => {
     const $: CheerioAPI = load(responseData as string);
@@ -108,44 +79,4 @@ export const parseShKhudheir = (responseData: ResponseData): null | Partial<Page
         : (article.text() || bodyTag.text()).trim();
 
     return { ...(body && { body }), ...(title && { title }) };
-};
-
-export interface PostData {
-    content: {
-        ar: {
-            body: string;
-            title: string;
-            updatedAt: number;
-        };
-    };
-    id: number;
-}
-
-export const parseShRajhi = (responseData: ResponseData): Page[] => {
-    const parsedContents: Page[] = ((responseData as any).data as PostData[])
-        .map(
-            ({
-                content: {
-                    ar: { body, title, updatedAt },
-                },
-                id,
-            }: PostData) => {
-                return {
-                    ...(body && { body: load(body).text().trim() }),
-                    id,
-                    sourceUpdatedAt: updatedAt,
-                    title,
-                };
-            },
-        )
-        .reverse();
-
-    return parsedContents;
-};
-
-export const parseZubairAliZai = (responseData: ResponseData): Partial<Page> => {
-    const sandbox = runSafely(responseData as string);
-    const [{ arabic, description = '', hukam: hukm = '' }] = Object.values(sandbox);
-
-    return { ...(arabic && { body: arabic }), footer: [description, hukm].filter(Boolean).join('\n') };
 };

@@ -3,14 +3,12 @@ import { describe, expect, it } from 'vitest';
 
 import {
     parseAlAlbaanyCom,
-    parseAlAtharNet,
     parseAlBadrNet,
     parseFerkous,
     parseSalTaweel,
     parseShAlBarrak,
     parseShKhudheir,
     parseShRajhi,
-    parseZubairAliZai,
 } from './handlers';
 
 describe('handlers', () => {
@@ -25,15 +23,6 @@ describe('handlers', () => {
                 part: 1050,
                 title: expect.any(String),
             });
-        });
-    });
-
-    describe('parseZubairAliZai', () => {
-        it('should handle request', async () => {
-            const jsCode = await fs.readFile('testing/zubair_ali_zai/ibnemaja_1200.js', 'utf-8');
-            const actual = parseZubairAliZai(jsCode);
-
-            expect(actual).toEqual({ body: expect.any(String), footer: 'بخاری ومسلم' });
         });
     });
 

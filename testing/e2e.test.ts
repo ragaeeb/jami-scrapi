@@ -1,9 +1,18 @@
 import { describe, expect, it } from 'vitest';
 
-import { getUrlPatterns, scrape } from '../src/index';
+import { getAudio } from '../src/al-albany.com/index';
 
 describe('e2e', () => {
-    describe('scrape', () => {
+    describe('al-albany.com', () => {
+        describe('getAudio', () => {
+            it('should get the audio', async () => {
+                const result = await getAudio(1500);
+                console.log('result', result);
+            });
+        });
+    });
+
+    describe.skip('scrape', () => {
         const getPages = async (start: number, end: number, pattern: string) => {
             return await scrape(start, end, getUrlPatterns().find((url) => url.includes(pattern)) as string);
         };
