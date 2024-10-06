@@ -10,7 +10,7 @@ vi.mock('../utils/network');
 describe('index', () => {
     describe('getAudio', () => {
         it('should handle request', async () => {
-            const html = await fs.readFile('testing/al-albaany.com/1500.htm', 'utf-8');
+            const html = await fs.readFile('testing/al-albany.com/1500.htm', 'utf-8');
             (getDOM as Mock).mockResolvedValue(load(html));
 
             const actual = await getAudio(1500);

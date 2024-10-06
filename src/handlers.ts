@@ -2,18 +2,6 @@ import { CheerioAPI, load } from 'cheerio';
 
 import { Page, ResponseData } from './types';
 
-export const parseAlAlbaanyCom = (responseData: ResponseData): Partial<Page> => {
-    const $: CheerioAPI = load(responseData as string);
-    const title = $('.col-lg-10').text().trim();
-    const body = $('#contentText').text().trim();
-    const bookName = $('.content-details a:nth-of-type(1)').text().trim();
-    const part = $('body > div.container > div.content > div.content-details > ul > li:nth-child(1) > a:nth-child(4)')
-        .text()
-        .trim();
-
-    return { ...(body && { body }), ...(bookName && { bookName }), part: parseInt(part), ...(title && { title }) };
-};
-
 const parseArticle = (responseData: ResponseData, selector: string = 'article'): Partial<Page> => {
     const $: CheerioAPI = load(responseData as string);
     const body = $(selector).text().trim();
@@ -51,9 +39,6 @@ export const parseRabeeNet = (responseData: ResponseData): Partial<Page> => {
 
     return { ...(body && { body }), ...(title && { title }) };
 };
-
-export const parseSalTaweel = parseArticle;
-
 
 export const parseShKhudheir = (responseData: ResponseData): null | Partial<Page> => {
     const $: CheerioAPI = load(responseData as string);

@@ -1,51 +1,16 @@
+import { CheerioAPI } from 'cheerio';
 import { URL, URLSearchParams } from 'url';
 
 import { getDOM } from '../utils/network';
 import { timeToSeconds } from '../utils/textUtils';
+import { Audio, Content, SpeakerId } from './types';
 
-export enum SpeakerId {
-    AbuLayla = 'abulaila',
-    Halabi = 'halabi',
-    Questioner = 'questioner',
-    Shaykh = 'sheikh',
-    Student = 'student',
-}
-
-export type Speaker = {
-    id: SpeakerId;
-    name: string;
-};
-
-export type Content = {
-    speaker: Speaker;
-    text: string;
-};
-
-export type Audio = {
-    content: Content[];
-    file: string;
-    tape: string;
-    tapeNumber: string;
-    timestamp: number;
-    title: string;
-};
-
-export const getAudio = async (id: number): Promise<Audio> => {
-    const $ = await getDOM(`https://www.al-albany.com/audios/content/${id}/1`);
-    const title = $('meta[property="og:title"]').attr('content')?.trim() as string;
-    const file = $('audio').attr('src') as string;
-    const { hash } = new URL(file);
-    const formattedTimestamp = new URLSearchParams(hash.slice(1)).get('t') as string;
-    const tape = $('.content-details a:nth-of-type(1)').text().trim();
-    const tapeNumber = $('.content-details li:contains("شريط") a[href*="tape"]').text().trim();
-
+const collectContent = ($: CheerioAPI) => {
     const content: Content[] = [];
     $('#contentText span').each((i, span) => {
-        const speakerClass = $(span).attr('class')?.trim();
+        const speakerClass = $(span).attr('class');
 
         if (speakerClass) {
-            const speaker: SpeakerId = speakerClass as SpeakerId;
-            const speakerName = $(span).text();
             const texts: string[] = [];
 
             // Traverse through the parent and subsequent siblings
@@ -68,19 +33,42 @@ export const getAudio = async (id: number): Promise<Audio> => {
             // Push the content into the array if there is text
             if (texts.length) {
                 content.push({
-                    speaker: { id: speaker, name: speakerName },
+                    speaker: { id: speakerClass as SpeakerId, name: $(span).text() },
                     text: texts.join(' '),
                 });
             }
         }
     });
 
+    return content;
+};
+
+const parseTimestamp = (file: string): number => {
+    const { hash } = new URL(file);
+    const formattedTimestamp = new URLSearchParams(hash.slice(1)).get('t') as string;
+
+    return timeToSeconds(formattedTimestamp);
+};
+
+export const getAudio = async (id: number): Promise<Audio> => {
+    const $ = await getDOM(`https://www.al-albany.com/audios/content/${id}/1`);
+    const title = $('meta[property="og:title"]').attr('content')?.trim() as string;
+    const file = $('audio').attr('src') as string;
+    const tape = $('.content-details a:nth-of-type(1)').text().trim();
+    const tapeNumber = $('.content-details li:contains("شريط") a[href*="tape"]').text().trim();
+
+    if (!title && !file && !tape && !tapeNumber) {
+        throw new Error(`Audio ${id} not found`);
+    }
+
     return {
-        content,
+        content: collectContent($),
         file,
         tape,
         tapeNumber,
-        timestamp: timeToSeconds(formattedTimestamp),
+        timestamp: parseTimestamp(file),
         title,
     };
 };
+
+export * from './types';
