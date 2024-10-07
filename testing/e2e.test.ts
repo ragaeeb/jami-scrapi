@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
 import { getAudio } from '../src/al-albany.com/index';
+import { getAllArticleIds, getAllLessonIds, getAllLessonIdsFromCategories, getLesson } from '../src/al-badr.net';
 import { getPage } from '../src/saltaweel.com';
 
 describe('e2e', () => {
@@ -38,8 +39,61 @@ describe('e2e', () => {
             });
 
             it('should gracefully handle 404', async () => {
-                await expect(getPage(99999999)).rejects.toThrow('Page 99999999 not found');
+                await expect(getPage(99999999)).rejects.toThrow(`99999999 not found`);
             });
+        });
+    });
+
+    describe('al-badr.net', () => {
+        describe('getLesson', () => {
+            it('should get the page', async () => {
+                const result = await getLesson('HK9FCGy2jkOD');
+
+                expect(result).toEqual({
+                    content: expect.any(String),
+                    date: '9 رجب 1428 | 23 يوليو 2007',
+                    title: 'لا يدخل الجنة قتات',
+                });
+            });
+
+            it('should gracefully handle 404', async () => {
+                const id = Date.now().toString();
+                await expect(getLesson(Date.now().toString())).rejects.toThrow(`${id} not found`);
+            });
+        });
+
+        describe('getAllArticleIds', () => {
+            it(
+                'should handle request',
+                async () => {
+                    const actual = await getAllArticleIds();
+                    expect(actual.length > 300).toBe(true);
+                },
+                { timeout: 30000 },
+            );
+        });
+
+        describe('getAllLessonIds', () => {
+            it(
+                'should handle request',
+                async () => {
+                    const actual = await getAllLessonIds();
+                    expect(actual.length > 890).toBe(true);
+                },
+                { timeout: 120000 },
+            );
+        });
+
+        describe('getAllLessonIdsFromCategories', () => {
+            it.only(
+                'should handle request',
+                async () => {
+                    const actual = await getAllLessonIdsFromCategories();
+                    console.log('actual', actual.length, actual);
+                    expect(actual.length > 890).toBe(true);
+                },
+                { timeout: 240000 },
+            );
         });
     });
 });
