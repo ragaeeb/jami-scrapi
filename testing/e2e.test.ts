@@ -12,6 +12,7 @@ import {
 import { getPage as getFerkousPage } from '../src/ferkous.com';
 import { getPage as getRabeePage } from '../src/rabee.net';
 import { getPage } from '../src/saltaweel.com';
+import { getPage as getShKhudheirPage } from '../src/shkhudheir.com';
 
 describe('e2e', () => {
     describe('al-albany.com', () => {
@@ -83,6 +84,19 @@ describe('e2e', () => {
             it('should gracefully handle 404', async () => {
                 const id = Date.now().toString();
                 await expect(getRabeePage(Date.now())).rejects.toThrow(`${id} not found`);
+            });
+        });
+    });
+
+    describe('shkhudheir.com', () => {
+        describe('getPage', () => {
+            it('should handle request', async () => {
+                const actual = await getShKhudheirPage(2222);
+
+                expect(actual).toEqual({
+                    content: expect.any(String),
+                    title: 'مِن أَعظَمِ المِنَن على المُسلِم',
+                });
             });
         });
     });
