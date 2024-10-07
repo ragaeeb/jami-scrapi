@@ -9,6 +9,7 @@ import {
     getLesson,
     getLessonCategoryIds,
 } from '../src/al-badr.net';
+import { getPage as getFerkousPage } from '../src/ferkous.com';
 import { getPage } from '../src/saltaweel.com';
 
 describe('e2e', () => {
@@ -48,6 +49,20 @@ describe('e2e', () => {
             it('should gracefully handle 404', async () => {
                 await expect(getPage(99999999)).rejects.toThrow(`99999999 not found`);
             });
+        });
+    });
+
+    describe('ferkous.com', () => {
+        it('should get the page', async () => {
+            const result = await getFerkousPage(1900);
+            expect(result).toEqual({
+                content: expect.any(String),
+            });
+        });
+
+        it('should gracefully handle 404', async () => {
+            const id = Date.now().toString();
+            await expect(getFerkousPage(Date.now())).rejects.toThrow(`${id} not found`);
         });
     });
 
@@ -92,7 +107,7 @@ describe('e2e', () => {
         });
 
         describe('getAllLessonIdsForMuhadarat', () => {
-            it.only(
+            it(
                 'should handle request',
                 async () => {
                     const actual = await getAllLessonIdsForMuhadarat();
