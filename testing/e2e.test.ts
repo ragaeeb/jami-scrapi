@@ -1,7 +1,13 @@
 import { describe, expect, it } from 'vitest';
 
 import { getAudio } from '../src/al-albany.com/index';
-import { getAllArticleIds, getAllLessonIds, getAllLessonIdsFromCategories, getLesson } from '../src/al-badr.net';
+import {
+    getAllArticleIds,
+    getAllLessonIds,
+    getAllLessonIdsFromCategory,
+    getLesson,
+    getLessonCategoryIds,
+} from '../src/al-badr.net';
 import { getPage } from '../src/saltaweel.com';
 
 describe('e2e', () => {
@@ -84,15 +90,21 @@ describe('e2e', () => {
             );
         });
 
-        describe('getAllLessonIdsFromCategories', () => {
+        describe('getLessonCategoryIds', () => {
+            it('should get all category ids', async () => {
+                const actual = await getLessonCategoryIds();
+                expect(actual).toEqual(['9', '11', '14', '72', '118', '238', '240']);
+            });
+        });
+
+        describe('getAllLessonIdsFromCategory', () => {
             it.only(
-                'should handle request',
+                'should get all lesson ids from the category',
                 async () => {
-                    const actual = await getAllLessonIdsFromCategories();
-                    console.log('actual', actual.length, actual);
-                    expect(actual.length > 890).toBe(true);
+                    const actual = await getAllLessonIdsFromCategory('240');
+                    expect(actual.length > 150).toBe(true);
                 },
-                { timeout: 240000 },
+                { timeout: 30000 },
             );
         });
     });
