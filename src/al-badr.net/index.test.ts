@@ -13,7 +13,7 @@ describe('index', () => {
             const html = await fs.readFile('testing/al-badr.net/7218.html', 'utf-8');
             (getDOM as Mock).mockResolvedValue(load(html));
 
-            const actual = await getArticle(7218);
+            const actual = await getArticle('7218');
 
             expect(actual).toEqual({
                 content: expect.any(String),

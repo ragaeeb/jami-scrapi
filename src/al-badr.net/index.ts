@@ -3,8 +3,7 @@ import { getQualifiedUrl } from '../utils/urlUtils';
 import {
     crawlAndCollectArticleLinks,
     crawlAndCollectLessonLinks,
-    getArticleListLinksFromNavBar,
-    getLessonsListLinksFromNavBar,
+    getLessonIdsFromMenuItem,
     getLinksFromList,
     getLinksFromMenu,
     mapLinkToId,
@@ -17,25 +16,25 @@ const qualifyUrl = (link: string): string => getQualifiedUrl(BASE_URL, link);
 
 export const getAllArticleIds = async (): Promise<string[]> => {
     const $ = await getDOM(BASE_URL);
-    const articleListLinks = getArticleListLinksFromNavBar($).map(qualifyUrl);
+    const articleListLinks = getLinksFromMenu($, 'المقالات', /\/muqolats\/\d+/).map(qualifyUrl);
     const articleLinks: string[] = await crawlAndCollectArticleLinks(articleListLinks, BASE_URL);
     return articleLinks.map(mapLinkToId);
 };
 
-export const getAllLessonIds = async (): Promise<string[]> => {
-    const $ = await getDOM(BASE_URL);
-    const lessonListLinks = (await getLessonsListLinksFromNavBar($)).map(qualifyUrl);
-    const lessonLinks: string[] = await crawlAndCollectLessonLinks(lessonListLinks, BASE_URL);
-
-    return lessonLinks.map(mapLinkToId);
-};
-
-export const getAllLessonIdsFromCategory = async (id: string): Promise<string[]> => {
+export const getAllLessonIdsForCategory = async (id: string): Promise<string[]> => {
     const $ = await getDOM(getQualifiedUrl(BASE_URL, `/category/${id}`));
     const lessonListLinks = await getLinksFromList($, 'div.post-content ul li a', /\/sub\/\d+/).map(qualifyUrl);
     const lessonLinks = await crawlAndCollectLessonLinks(lessonListLinks, BASE_URL);
 
     return lessonLinks.map(mapLinkToId);
+};
+
+export const getAllLessonIdsForKhutab = async (): Promise<string[]> => {
+    return getLessonIdsFromMenuItem(BASE_URL, 'الخطب', /\/sub\/\d+/);
+};
+
+export const getAllLessonIdsForMuhadarat = async (): Promise<string[]> => {
+    return getLessonIdsFromMenuItem(BASE_URL, 'المحاضرات', /\/sub\/\d+/);
 };
 
 export const getArticle = async (id: string): Promise<Page> => {

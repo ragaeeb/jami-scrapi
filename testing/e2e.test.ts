@@ -3,8 +3,9 @@ import { describe, expect, it } from 'vitest';
 import { getAudio } from '../src/al-albany.com/index';
 import {
     getAllArticleIds,
-    getAllLessonIds,
-    getAllLessonIdsFromCategory,
+    getAllLessonIdsForCategory,
+    getAllLessonIdsForKhutab,
+    getAllLessonIdsForMuhadarat,
     getLesson,
     getLessonCategoryIds,
 } from '../src/al-badr.net';
@@ -79,14 +80,25 @@ describe('e2e', () => {
             );
         });
 
-        describe('getAllLessonIds', () => {
+        describe('getAllLessonIdsForKhutab', () => {
             it(
                 'should handle request',
                 async () => {
-                    const actual = await getAllLessonIds();
-                    expect(actual.length > 890).toBe(true);
+                    const actual = await getAllLessonIdsForKhutab();
+                    expect(actual.length > 480).toBe(true);
                 },
-                { timeout: 120000 },
+                { timeout: 60000 },
+            );
+        });
+
+        describe('getAllLessonIdsForMuhadarat', () => {
+            it.only(
+                'should handle request',
+                async () => {
+                    const actual = await getAllLessonIdsForMuhadarat();
+                    expect(actual.length > 400).toBe(true);
+                },
+                { timeout: 60000 },
             );
         });
 
@@ -98,10 +110,10 @@ describe('e2e', () => {
         });
 
         describe('getAllLessonIdsFromCategory', () => {
-            it.only(
+            it(
                 'should get all lesson ids from the category',
                 async () => {
-                    const actual = await getAllLessonIdsFromCategory('240');
+                    const actual = await getAllLessonIdsForCategory('240');
                     expect(actual.length > 150).toBe(true);
                 },
                 { timeout: 30000 },

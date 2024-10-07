@@ -80,17 +80,16 @@ export const getLinksFromMenu = ($: CheerioAPI, query: string, linkPattern: RegE
     return links;
 };
 
-export const getArticleListLinksFromNavBar = ($: CheerioAPI): string[] => {
-    return getLinksFromMenu($, 'المقالات', /\/muqolats\/\d+/);
-};
-
-export const getLessonsListLinksFromNavBar = ($: CheerioAPI): string[] => {
-    const links: string[] = [
-        ...getLinksFromMenu($, 'الخطب', /\/sub\/\d+/),
-        ...getLinksFromMenu($, 'المحاضرات', /\/sub\/\d+/),
-    ];
-
-    return links;
-};
-
 export const mapLinkToId = (link: string): string => link.split('/').at(-1) as string;
+
+export const getLessonIdsFromMenuItem = async (
+    baseUrl: string,
+    query: string,
+    linkPattern: RegExp,
+): Promise<string[]> => {
+    const $ = await getDOM(baseUrl);
+    const lessonListLinks = getLinksFromMenu($, query, linkPattern).map((link) => getQualifiedUrl(baseUrl, link));
+    const lessonLinks = await crawlAndCollectLessonLinks(lessonListLinks, baseUrl);
+
+    return lessonLinks.map(mapLinkToId);
+};
