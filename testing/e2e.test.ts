@@ -10,6 +10,7 @@ import {
     getLessonCategoryIds,
 } from '../src/al-badr.net';
 import { getPage as getFerkousPage } from '../src/ferkous.com';
+import { getPage as getRabeePage } from '../src/rabee.net';
 import { getPage } from '../src/saltaweel.com';
 
 describe('e2e', () => {
@@ -53,16 +54,36 @@ describe('e2e', () => {
     });
 
     describe('ferkous.com', () => {
-        it('should get the page', async () => {
-            const result = await getFerkousPage(1900);
-            expect(result).toEqual({
-                content: expect.any(String),
+        describe('getPage', () => {
+            it('should get the page', async () => {
+                const result = await getFerkousPage(1900);
+                expect(result).toEqual({
+                    content: expect.any(String),
+                });
+            });
+
+            it('should gracefully handle 404', async () => {
+                const id = Date.now().toString();
+                await expect(getFerkousPage(Date.now())).rejects.toThrow(`${id} not found`);
             });
         });
+    });
 
-        it('should gracefully handle 404', async () => {
-            const id = Date.now().toString();
-            await expect(getFerkousPage(Date.now())).rejects.toThrow(`${id} not found`);
+    describe('rabee.net', () => {
+        describe('getPage', () => {
+            it('should handle request', async () => {
+                const actual = await getRabeePage(713);
+
+                expect(actual).toEqual({
+                    content: expect.any(String),
+                    title: 'هل يجوز في أيام عشر ذي الحجة تقليم الأظافر وحلق الشعر بما في ذلك تخفيف اللحية أو حلقها؟',
+                });
+            });
+
+            it('should gracefully handle 404', async () => {
+                const id = Date.now().toString();
+                await expect(getRabeePage(Date.now())).rejects.toThrow(`${id} not found`);
+            });
         });
     });
 
