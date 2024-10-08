@@ -1,53 +1,173 @@
 import { describe, expect, it } from 'vitest';
 
-import { getUrlPatterns, scrape } from '../src/index';
+import { getAudio } from '../src/al-albany.com/index';
+import {
+    getAllArticleIds,
+    getAllLessonIdsForCategory,
+    getAllLessonIdsForKhutab,
+    getAllLessonIdsForMuhadarat,
+    getLesson,
+    getLessonCategoryIds,
+} from '../src/al-badr.net';
+import { getPage as getFerkousPage } from '../src/ferkous.com';
+import { getPage as getRabeePage } from '../src/rabee.net';
+import { getPage } from '../src/saltaweel.com';
+import { getPage as getShKhudheirPage } from '../src/shkhudheir.com';
 
 describe('e2e', () => {
-    describe('scrape', () => {
-        const getPages = async (start: number, end: number, pattern: string) => {
-            return await scrape(start, end, getUrlPatterns().find((url) => url.includes(pattern)) as string);
-        };
+    describe('al-albany.com', () => {
+        describe('getAudio', () => {
+            it('should get the audio', async () => {
+                const result = await getAudio(1500);
+                expect(result).toEqual({
+                    content: expect.any(Array),
+                    file: expect.any(String),
+                    tape: expect.any(String),
+                    tapeNumber: '1050',
+                    timestamp: 3521,
+                    title: expect.any(String),
+                });
 
-        it(
-            'should scrape saltaweel.com article',
-            async () => {
-                const pages = await getPages(55, 56, 'saltaweel.com');
+                expect(result.content).toHaveLength(10);
+            });
 
-                expect(pages).toEqual([
-                    { body: expect.any(String), id: 55 },
-                    { body: expect.any(String), id: 56 },
-                ]);
-            },
-            { timeout: 10000 },
-        );
+            it('should gracefully handle 404', async () => {
+                await expect(getAudio(99999999)).rejects.toThrow('Audio 99999999 not found');
+            });
+        });
+    });
 
-        it(
-            'should scrape al-badr.net article',
-            async () => {
-                const pages = await getPages(6706, 6707, 'al-badr.net/muqolat');
+    describe('saltaweel.com', () => {
+        describe('getPage', () => {
+            it('should get the page', async () => {
+                const result = await getPage(55);
+                expect(result).toEqual({
+                    content: expect.any(String),
+                    date: '9 رجب 1428 | 23 يوليو 2007',
+                    title: 'لا يدخل الجنة قتات',
+                });
+            });
 
-                expect(pages).toEqual([{ body: expect.any(String), id: 6706 }]);
-            },
-            { timeout: 10000 },
-        );
+            it('should gracefully handle 404', async () => {
+                await expect(getPage(99999999)).rejects.toThrow(`99999999 not found`);
+            });
+        });
+    });
 
-        it(
-            'should scrape alathar.net article',
-            async () => {
-                const pages = await getPages(110022, 110022, 'alathar.net/home');
+    describe('ferkous.com', () => {
+        describe('getPage', () => {
+            it('should get the page', async () => {
+                const result = await getFerkousPage(1900);
+                expect(result).toEqual({
+                    content: expect.any(String),
+                });
+            });
 
-                expect(pages).toEqual([
-                    {
-                        body: expect.any(String),
-                        bookName: 'صحيح مسلم',
-                        chapterName: 'كتاب الصيام والإعتكاف-02b',
-                        id: 110022,
-                        metadata: { author: 'الشيخ محمد بن صالح العثيمين' },
-                        title: 'هل المقصود بأهل الكتاب هنا الذين كانوا على الحق أم الكفار ؟',
-                    },
-                ]);
-            },
-            { timeout: 10000 },
-        );
+            it('should gracefully handle 404', async () => {
+                const id = Date.now().toString();
+                await expect(getFerkousPage(Date.now())).rejects.toThrow(`${id} not found`);
+            });
+        });
+    });
+
+    describe('rabee.net', () => {
+        describe('getPage', () => {
+            it('should handle request', async () => {
+                const actual = await getRabeePage(713);
+
+                expect(actual).toEqual({
+                    content: expect.any(String),
+                    title: 'هل يجوز في أيام عشر ذي الحجة تقليم الأظافر وحلق الشعر بما في ذلك تخفيف اللحية أو حلقها؟',
+                });
+            });
+
+            it('should gracefully handle 404', async () => {
+                const id = Date.now().toString();
+                await expect(getRabeePage(Date.now())).rejects.toThrow(`${id} not found`);
+            });
+        });
+    });
+
+    describe('shkhudheir.com', () => {
+        describe('getPage', () => {
+            it('should handle request', async () => {
+                const actual = await getShKhudheirPage(2222);
+
+                expect(actual).toEqual({
+                    content: expect.any(String),
+                    title: 'مِن أَعظَمِ المِنَن على المُسلِم',
+                });
+            });
+        });
+    });
+
+    describe('al-badr.net', () => {
+        describe('getLesson', () => {
+            it('should get the page', async () => {
+                const result = await getLesson('HK9FCGy2jkOD');
+
+                expect(result).toEqual({
+                    content: expect.any(String),
+                    date: '9 رجب 1428 | 23 يوليو 2007',
+                    title: 'لا يدخل الجنة قتات',
+                });
+            });
+
+            it('should gracefully handle 404', async () => {
+                const id = Date.now().toString();
+                await expect(getLesson(Date.now().toString())).rejects.toThrow(`${id} not found`);
+            });
+        });
+
+        describe('getAllArticleIds', () => {
+            it(
+                'should handle request',
+                async () => {
+                    const actual = await getAllArticleIds();
+                    expect(actual.length > 300).toBe(true);
+                },
+                { timeout: 30000 },
+            );
+        });
+
+        describe('getAllLessonIdsForKhutab', () => {
+            it(
+                'should handle request',
+                async () => {
+                    const actual = await getAllLessonIdsForKhutab();
+                    expect(actual.length > 480).toBe(true);
+                },
+                { timeout: 60000 },
+            );
+        });
+
+        describe('getAllLessonIdsForMuhadarat', () => {
+            it(
+                'should handle request',
+                async () => {
+                    const actual = await getAllLessonIdsForMuhadarat();
+                    expect(actual.length > 400).toBe(true);
+                },
+                { timeout: 60000 },
+            );
+        });
+
+        describe('getLessonCategoryIds', () => {
+            it('should get all category ids', async () => {
+                const actual = await getLessonCategoryIds();
+                expect(actual).toEqual(['9', '11', '14', '72', '118', '238', '240']);
+            });
+        });
+
+        describe('getAllLessonIdsFromCategory', () => {
+            it(
+                'should get all lesson ids from the category',
+                async () => {
+                    const actual = await getAllLessonIdsForCategory('240');
+                    expect(actual.length > 150).toBe(true);
+                },
+                { timeout: 30000 },
+            );
+        });
     });
 });
