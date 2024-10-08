@@ -6,13 +6,14 @@ import {
     getLessonIdsFromMenuItem,
     getLinksFromList,
     getLinksFromMenu,
-    mapLinkToId,
 } from './parser';
 import { Page } from './types';
 
 export const BASE_URL = `https://al-badr.net`;
 
 const qualifyUrl = (link: string): string => getQualifiedUrl(BASE_URL, link);
+
+const mapLinkToId = (link: string): string => link.split('/').at(-1) as string;
 
 export const getAllArticleIds = async (): Promise<string[]> => {
     const $ = await getDOM(BASE_URL);
@@ -30,11 +31,11 @@ export const getAllLessonIdsForCategory = async (id: string): Promise<string[]> 
 };
 
 export const getAllLessonIdsForKhutab = async (): Promise<string[]> => {
-    return getLessonIdsFromMenuItem(BASE_URL, 'الخطب', /\/sub\/\d+/);
+    return (await getLessonIdsFromMenuItem(BASE_URL, 'الخطب', /\/sub\/\d+/)).map(mapLinkToId);
 };
 
 export const getAllLessonIdsForMuhadarat = async (): Promise<string[]> => {
-    return getLessonIdsFromMenuItem(BASE_URL, 'المحاضرات', /\/sub\/\d+/);
+    return (await getLessonIdsFromMenuItem(BASE_URL, 'المحاضرات', /\/sub\/\d+/)).map(mapLinkToId);
 };
 
 export const getArticle = async (id: string): Promise<Page> => {

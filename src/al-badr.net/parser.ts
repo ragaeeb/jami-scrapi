@@ -80,8 +80,6 @@ export const getLinksFromMenu = ($: CheerioAPI, query: string, linkPattern: RegE
     return links;
 };
 
-export const mapLinkToId = (link: string): string => link.split('/').at(-1) as string;
-
 export const getLessonIdsFromMenuItem = async (
     baseUrl: string,
     query: string,
@@ -91,5 +89,5 @@ export const getLessonIdsFromMenuItem = async (
     const lessonListLinks = getLinksFromMenu($, query, linkPattern).map((link) => getQualifiedUrl(baseUrl, link));
     const lessonLinks = await crawlAndCollectLessonLinks(lessonListLinks, baseUrl);
 
-    return lessonLinks.map(mapLinkToId);
+    return lessonLinks;
 };

@@ -1,13 +1,19 @@
 import { load } from 'cheerio';
 import { promises as fs } from 'fs';
-import { describe, expect, it, Mock, vi } from 'vitest';
+import { beforeEach, describe, expect, it, Mock, vi } from 'vitest';
 
 import { getAllArticleIds, getArticle, getLesson } from '.';
 import { getDOM } from '../utils/network';
+import { crawlAndCollectArticleLinks, getLinksFromMenu } from './parser';
 
 vi.mock('../utils/network');
+vi.mock('./parser');
 
 describe('index', () => {
+    beforeEach(() => {
+        vi.clearAllMocks();
+    });
+
     describe('getArticle', () => {
         it('should handle request', async () => {
             const html = await fs.readFile('testing/al-badr.net/7218.html', 'utf-8');
@@ -24,12 +30,12 @@ describe('index', () => {
 
     describe('getAllArticleIds', () => {
         it('should handle request', async () => {
-            const html = await fs.readFile('testing/al-badr.net/7218.html', 'utf-8');
-            (getDOM as Mock).mockResolvedValue(load(html));
+            (getLinksFromMenu as Mock).mockReturnValue([]);
+            (crawlAndCollectArticleLinks as Mock).mockResolvedValue(['/detail/1234']);
 
             const actual = await getAllArticleIds();
 
-            expect(actual).toEqual([]);
+            expect(actual).toEqual(['1234']);
         });
     });
 
