@@ -1,10 +1,6 @@
-export const timeToSeconds = (time: string): number => {
-    const parts = time.split(':').map(Number);
-    if (parts.length === 3) {
-        return parts[0] * 3600 + parts[1] * 60 + parts[2];
-    }
-    if (parts.length === 2) {
-        return parts[0] * 60 + parts[1];
-    }
-    return 0;
+export const toSnakeCase = (camelCase: string) => {
+    return camelCase
+        .match(/([A-Z])/g)
+        ?.reduce((str, c) => str.replace(new RegExp(c), '_' + c.toLowerCase()), camelCase)
+        .substring(camelCase.slice(0, 1).match(/([A-Z])/g) ? 1 : 0);
 };
