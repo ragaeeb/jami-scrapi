@@ -9,7 +9,7 @@
     "main": "dist/main.js",
     "type": "module",
     "bin": {
-        "jami-scrapi": "./dist/index.js"
+        "jami-scrapi": "dist/index.js"
     },
     "repository": {
         "type": "git",
