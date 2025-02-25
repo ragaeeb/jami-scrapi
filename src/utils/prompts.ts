@@ -2,6 +2,7 @@ import { input, select } from '@inquirer/prompts';
 import { availableScrapers, getScraper, listFunctions, type Page } from 'bimbimba';
 
 type PromptChoicesResult = {
+    delay: number;
     end: number;
     func(page: number): Promise<Page | Page[]>;
     functionName: string;
@@ -55,5 +56,21 @@ export const promptChoices = async (): Promise<PromptChoicesResult> => {
         }),
     );
 
-    return { end, func: module[func], functionName: func, library, start };
+    const delay =
+        parseInt(
+            await input({
+                default: '0',
+                message: 'Enter delay in seconds between requests:',
+                required: false,
+                validate: (page) => {
+                    if (!/\d+/.test(page)) {
+                        return 'Please enter a valid delay in seconds';
+                    }
+
+                    return true;
+                },
+            }),
+        ) || 0;
+
+    return { delay, end, func: module[func], functionName: func, library, start };
 };
