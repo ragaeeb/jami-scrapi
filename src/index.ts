@@ -16,11 +16,12 @@ const main = async () => {
         version: packageJson.version,
     });
 
-    const { end, func, functionName, library, start } = await promptChoices();
+    const { delay, end, func, functionName, library, start } = await promptChoices();
 
     const outputFile = path.format({ ext: '.json', name: `${library}_${toSnakeCase(functionName)}` });
 
     await scrape({
+        delay,
         end,
         func,
         metadata: {
