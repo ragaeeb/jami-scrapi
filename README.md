@@ -4,7 +4,6 @@
 ![GitHub issues](https://img.shields.io/github/issues/ragaeeb/jami-scrapi)
 ![GitHub License](https://img.shields.io/github/license/ragaeeb/jami-scrapi)
 ![GitHub Release](https://img.shields.io/github/v/release/ragaeeb/jami-scrapi)
-[![Size](https://deno.bundlejs.com/badge?q=jami-scrapi@latest&badge=detailed)](https://bundlejs.com/?q=jami-scrapi%40latest)
 ![typescript](https://badgen.net/badge/icon/typescript?icon=typescript&label&color=blue)
 
 # Jami Scrapi

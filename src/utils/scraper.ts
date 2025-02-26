@@ -34,15 +34,15 @@ export const scrape = async ({ delay, end, func, logger, metadata, outputFile, s
         return pages;
     };
 
-    process.on('SIGINT', () => {
+    process.on('SIGINT', async () => {
         logger.info('Gracefully shutting down...');
-        saveProgress();
+        await saveProgress();
         process.exit(0);
     });
 
-    process.on('SIGTERM', () => {
+    process.on('SIGTERM', async () => {
         logger.info('Process terminated.');
-        saveProgress();
+        await saveProgress();
         process.exit(0);
     });
 
