@@ -1,10 +1,12 @@
 import { input, select } from '@inquirer/prompts';
 import { availableScrapers, getScraper, listFunctions, type Page } from 'bimbimba';
 
+import { PageFetcher } from '../types.js';
+
 type PromptChoicesResult = {
     delay: number;
     end: number;
-    func(page: number): Promise<Page | Page[]>;
+    func: PageFetcher;
     functionName: string;
     library: string;
     start: number;
