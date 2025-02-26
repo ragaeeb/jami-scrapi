@@ -14,6 +14,9 @@ type ScrapeAndUploadPayload = {
     start: number;
 };
 
+/**
+ * Scrapes the given website starting at the page ranges for the payload and then uploads the result to a AWS S3 Bucket.
+ */
 export const scrapeAndUpload = task({
     id: 'scrape-and-upload',
     maxDuration: 3600,
@@ -39,6 +42,7 @@ export const scrapeAndUpload = task({
             delay,
             end,
             func: module[functionName],
+            logger,
             outputFile,
             start,
         });

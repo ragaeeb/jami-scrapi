@@ -5,6 +5,7 @@ import process from 'node:process';
 
 import packageJson from '../package.json' assert { type: 'json' };
 import { joinBooks } from './joiner.js';
+import logger from './utils/logger.js';
 import { promptChoices } from './utils/prompts.js';
 import { scrape } from './utils/scraper.js';
 import { toSnakeCase } from './utils/textUtils.js';
@@ -26,6 +27,7 @@ const main = async () => {
         delay,
         end,
         func,
+        logger,
         metadata: {
             scrapingEngine: {
                 name: packageJson.name,

@@ -63,10 +63,6 @@ jami-scrapi
 
 This will scrape pages 1 through 5 using the `getPage` function from the exampleScraper library and save the results to `example_scraper_get_page.json`.
 
-## Local Development
-
-Use `bunx trigger.dev@latest dev` to monitor the trigger folder to test the long-running scraping task.
-
 ## Requirements
 
 - **Node.js v23.0.0+**

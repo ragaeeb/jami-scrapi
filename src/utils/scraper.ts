@@ -1,10 +1,10 @@
 import type { Page } from 'bimbimba';
 
+import { logger as LoggerAPI } from '@trigger.dev/sdk/v3';
 import { promises as fs } from 'node:fs';
 import process from 'node:process';
 import { setTimeout } from 'node:timers/promises';
-
-import logger from './logger.js';
+import { type Logger as PinoLogger } from 'pino';
 
 const getRandomInt = (min: number, max: number) => {
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -14,6 +14,7 @@ export const scrape = async ({
     delay,
     end,
     func,
+    logger,
     metadata,
     outputFile,
     start,
@@ -21,6 +22,7 @@ export const scrape = async ({
     delay: number;
     end: number;
     func(page: number): Promise<Page | Page[]>;
+    logger: Pick<PinoLogger, 'error' | 'info' | 'warn'> | typeof LoggerAPI;
     metadata?: Record<string, any>;
     outputFile: string;
     start: number;
