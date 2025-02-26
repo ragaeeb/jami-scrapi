@@ -4,7 +4,7 @@ import { promises as fs } from 'node:fs';
 import process from 'node:process';
 import { setTimeout } from 'node:timers/promises';
 
-import logger from './utils/logger.js';
+import logger from './logger.js';
 
 const getRandomInt = (min: number, max: number) => {
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -37,6 +37,8 @@ export const scrape = async ({
                 2,
             ),
         );
+
+        return pages;
     };
 
     process.on('SIGINT', () => {

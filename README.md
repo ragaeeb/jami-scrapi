@@ -7,22 +7,16 @@
 [![Size](https://deno.bundlejs.com/badge?q=jami-scrapi@latest&badge=detailed)](https://bundlejs.com/?q=jami-scrapi%40latest)
 ![typescript](https://badgen.net/badge/icon/typescript?icon=typescript&label&color=blue)
 
-# jami-scrapers
+# Jami Scrapi
 
-Helps scrape data from various websites.
-
-## Table of Contents
-
-- ## Installation
-- ## Requirements
-- ## License
+A command-line tool for web scraping, designed for ease of use and flexibility. It leverages [bimbimba](some_bimbimba_link_eventually) to provide a straightforward interface for extracting data from websites.
 
 ## Installation
 
-To install the `jami-scrapi`, ensure you have Node.js version 23.0.0 or later.
+Ensure you have Bun installed. If not, you can install it following the instructions on the [Bun website](https://bun.sh/).
 
 ```bash
-npm install -g jami-scrapi
+bun install -g jami-scrapi
 ```
 
 Or
@@ -37,11 +31,59 @@ Or
 bunx jami-scrapi
 ```
 
+## Usage
+
+After installation, you can run the `jami-scrapi` command in your terminal.
+
+```bash
+jami-scrapi
+```
+
+The CLI will then prompt you to:
+
+1.  **Select a library**:  Choose the scraping library you want to use. Currently uses `bimbimba`.
+2.  **Select a function**:  Choose the specific scraping function you want to run from the selected library.
+3.  **Enter a start page**: Specify the page number to begin scraping from.
+4.  **Enter an end page**:  Specify the page number to stop scraping at.
+
+The scraped data will be saved to a JSON file in the current directory, named according to the library and function used (e.g., `library_function_name.json`).
+
+Example:
+
+```bash
+jami-scrapi
+```
+
+```
+? Select library:  exampleScraper
+? Select function: getPage
+? Enter page to start at: 1
+? Enter page to end at: 5
+```
+
+This will scrape pages 1 through 5 using the `getPage` function from the exampleScraper library and save the results to `example_scraper_get_page.json`.
+
+## Local Development
+
+Use `bunx trigger.dev@latest dev` to monitor the trigger folder to test the long-running scraping task.
+
 ## Requirements
 
 - **Node.js v23.0.0+**
 
+## Contributing
+
+Contributions are welcome! Feel free to submit pull requests or open issues to suggest improvements or report bugs.
+
+1.  Fork the repository.
+2.  Create a new branch for your feature or bug fix.
+3.  Make your changes and commit them with descriptive messages.
+4.  Push your changes to your fork.
+5.  Submit a pull request to the main branch of the original repository.
+
 ## License
 
-Licensed under the MIT License.
+This project is licensed under the MIT License. See the `LICENSE.MD` file for details.
+
+[![Built with Dokugen](https://img.shields.io/badge/Built%20with-Dokugen-brightgreen)](https://github.com/samueltuoyo15/Dokugen)
 ````
