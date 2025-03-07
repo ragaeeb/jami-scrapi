@@ -1,61 +1,85 @@
 #!/usr/bin/env bun
+import { input, select } from '@inquirer/prompts';
 import welcome from 'cli-welcome';
 import path from 'node:path';
-import process from 'node:process';
+import { URL } from 'node:url';
 
 import packageJson from '../package.json' assert { type: 'json' };
 import { joinBooks } from './joiner.js';
 import logger from './utils/logger.js';
-import { promptChoices } from './utils/prompts.js';
+import { promptChoices, promptPostProcessor } from './utils/prompts.js';
 import { scrape } from './utils/scraper.js';
 import { toSnakeCase } from './utils/textUtils.js';
+import { scrapeWordpress } from './utils/wordpress.js';
+
+const scrapeFromBimbimba = async (metadata: Record<string, any>) => {
+    const { delay, func, functionName, library, pageNumbers } = await promptChoices();
+    const urlPattern = await input({
+        message: 'Enter the url pattern:',
+        required: true,
+        validate: (input) => (input ? true : 'Please enter a valid host'),
+    });
+
+    const outputFile = path.format({
+        ext: '.json',
+        name: `${library}_${toSnakeCase(functionName)}_${pageNumbers[0]}_${pageNumbers.at(-1)}`,
+    });
+
+    return scrape({
+        delay,
+        func,
+        logger,
+        metadata: { ...metadata, urlPattern },
+        outputFile,
+        pageNumbers,
+    });
+};
 
 const main = async () => {
     welcome({
         bgColor: `#FADC00`,
         bold: true,
+        clear: false,
         color: `#000000`,
         title: packageJson.name,
         version: packageJson.version,
     });
 
-    const { delay, end, func, functionName, library, start } = await promptChoices();
-
-    const outputFile = path.format({ ext: '.json', name: `${library}_${toSnakeCase(functionName)}_${start}_${end}` });
-
-    await scrape({
-        delay,
-        end,
-        func,
-        logger,
-        metadata: {
-            scrapingEngine: {
-                name: packageJson.name,
-                version: packageJson.version,
-            },
+    const metadata = {
+        scrapingEngine: {
+            name: packageJson.name,
+            version: packageJson.version,
         },
-        outputFile,
-        start,
+    };
+
+    const action = await select({
+        choices: [
+            { name: 'Scrape Wordpress site', value: 'wordpress' },
+            { name: 'Scrape from bimbimba', value: 'bimbimba' },
+            { name: 'Post-process scraped data', value: 'post-process' },
+        ],
+        message: 'What do you want to do?',
     });
+
+    if (action === 'bimbimba') {
+        await scrapeFromBimbimba(metadata);
+    } else if (action === 'post-process') {
+        const { inputFolder, outputFile } = await promptPostProcessor();
+        await joinBooks(inputFolder, metadata, outputFile);
+    } else if (action === 'wordpress') {
+        const host = await input({
+            message: 'Enter the host (ie: https://abc.com):',
+            required: true,
+            validate: (input) => (input ? true : 'Please enter a valid host'),
+        });
+
+        await scrapeWordpress({
+            host,
+            logger,
+            metadata: { ...metadata, urlPattern: `${host}?p={{url}}` },
+            outputFile: path.format({ ext: '.json', name: new URL(host).host }),
+        });
+    }
 };
 
-const [command, input, outputFile] = process.argv.slice(2);
-
-if (command === '--join') {
-    if (!input || !outputFile) {
-        throw new Error(`Both an input folder and an output file are required`);
-    }
-
-    joinBooks(
-        input,
-        {
-            scrapingEngine: {
-                name: packageJson.name,
-                version: packageJson.version,
-            },
-        },
-        outputFile,
-    );
-} else {
-    main();
-}
+main();
