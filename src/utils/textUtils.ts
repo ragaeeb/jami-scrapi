@@ -4,3 +4,5 @@ export const toSnakeCase = (camelCase: string) => {
         ?.reduce((str, c) => str.replace(new RegExp(c), '_' + c.toLowerCase()), camelCase)
         .substring(camelCase.slice(0, 1).match(/([A-Z])/g) ? 1 : 0);
 };
+
+export const sanitizeInput = (input: string) => input.trim().replace(/\\ /g, ' ');

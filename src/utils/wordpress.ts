@@ -13,12 +13,7 @@ type PostResponse = {
     title: { rendered: string };
 };
 
-const getWordpressContent = async (
-    host: string,
-    endpoint: 'pages' | 'posts',
-    offset: number,
-    limit: number,
-): Promise<Page[]> => {
+const getWordpressContent = async (host: string, endpoint: string, offset: number, limit: number): Promise<Page[]> => {
     const url = new URL(`${host}/wp-json/wp/v2/${endpoint}`);
     url.search = new URLSearchParams({ offset: offset.toString(), per_page: limit.toString() }).toString();
 
@@ -52,9 +47,10 @@ type ScrapeWordpressProps = {
     logger: SubLogger;
     metadata?: Record<string, any>;
     outputFile: string;
+    routes: string[];
 };
 
-export const scrapeWordpress = async ({ host, logger, metadata, outputFile }: ScrapeWordpressProps) => {
+export const scrapeWordpress = async ({ host, logger, metadata, outputFile, routes }: ScrapeWordpressProps) => {
     let pages: Page[] = [];
 
     const progressSaver = new ProgressSaver({
@@ -63,35 +59,75 @@ export const scrapeWordpress = async ({ host, logger, metadata, outputFile }: Sc
         outputFile,
     });
 
-    let offset = 0;
+    for (const route of routes) {
+        let offset = 0;
 
-    while (true) {
-        logger.info(`Downloading pages from ${host}/pages offset=${offset}`);
-        const result = await getWordpressContent(host, 'pages', offset, 100);
-        pages = pages.concat(result);
+        while (offset >= 0) {
+            logger.info(`Downloading pages from ${host}/${route} offset=${offset}`);
+            const result = await getWordpressContent(host, route, offset, 100);
+            pages = pages.concat(result);
 
-        offset += result.length;
-
-        if (result.length === 0) {
-            break;
-        }
-    }
-
-    offset = 0;
-
-    while (true) {
-        logger.info(`Downloading posts from ${host}/posts offset=${offset}`);
-        const result = await getWordpressContent(host, 'posts', offset, 100);
-        pages = pages.concat(result);
-
-        offset += result.length;
-
-        if (result.length === 0) {
-            break;
+            if (result.length === 0) {
+                offset = -1;
+            } else {
+                offset += result.length;
+            }
         }
     }
 
     await progressSaver.saveProgress();
 
     return pages;
+};
+
+const STANDARD_ROUTES = [
+    '/wp/v2/comments',
+    '/wp/v2/types',
+    '/wp/v2/media',
+    '/wp/v2/menu-items',
+    '/wp/v2/blocks',
+    '/wp/v2/templates',
+    '/wp/v2/template-parts',
+    '/wp/v2/navigation',
+    '/wp/v2/font-families',
+    '/wp/v2/e-floating-buttons',
+    '/wp/v2/elementor_library',
+    '/wp/v2/feedback',
+    '/wp/v2/jp_pay_order',
+    '/wp/v2/jp_pay_product',
+    '/wp/v2/statuses',
+    '/wp/v2/taxonomies',
+    '/wp/v2/categories',
+    '/wp/v2/tags',
+    '/wp/v2/menus',
+    '/wp/v2/wp_pattern_category',
+    '/wp/v2/audio_category_api',
+    '/wp/v2/slide_category_api',
+    '/wp/v2/book_category_api',
+    '/wp/v2/groups_category_api',
+    '/wp/v2/about_Sheikh_category_api',
+    '/wp/v2/alfatawi_category_api',
+    '/wp/v2/benefits_category_api',
+    '/wp/v2/users',
+    '/wp/v2/search',
+    '/wp/v2/block-types',
+    '/wp/v2/settings',
+    '/wp/v2/themes',
+    '/wp/v2/plugins',
+    '/wp/v2/sidebars',
+    '/wp/v2/widget-types',
+    '/wp/v2/widgets',
+    '/wp/v2/menu-locations',
+    '/wp/v2/font-collections',
+];
+
+export const getRouteKeys = async (host: string) => {
+    const noise = new Set(STANDARD_ROUTES);
+
+    const routeKeys = Object.keys((await getJSON(`${host}/wp-json/wp/v2`)).routes)
+        .filter((route) => route.split('/').length === 4) // only consider /wp/v2/[x] and not /wp/v2/[x]/...
+        .filter((route) => !noise.has(route))
+        .map((route) => route.split('/').at(-1) as string);
+
+    return routeKeys;
 };

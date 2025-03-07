@@ -1,8 +1,10 @@
-import { input, select } from '@inquirer/prompts';
+import { checkbox, input, select } from '@inquirer/prompts';
 import { availableScrapers, getScraper, listFunctions } from 'bimbimba';
 import fs from 'node:fs';
 
 import { PageFetcher } from '../types.js';
+import { sanitizeInput } from './textUtils.js';
+import { getRouteKeys } from './wordpress.js';
 
 type PromptChoicesResult = {
     delay: number;
@@ -71,8 +73,6 @@ export const promptChoices = async (): Promise<PromptChoicesResult> => {
     return { delay, func: module[func], functionName: func, library, pageNumbers };
 };
 
-const sanitizeInput = (input: string) => input.trim().replace(/\\ /g, ' ');
-
 export const promptPostProcessor = async () => {
     const inputFolder = await input({
         message: 'Enter the folder:',
@@ -99,4 +99,22 @@ export const promptPostProcessor = async () => {
     });
 
     return { inputFolder: inputFolder.trim(), outputFile: outputFile.trim() };
+};
+
+export const promptWordpress = async () => {
+    const host = await input({
+        message: 'Enter the host (ie: https://abc.com):',
+        required: true,
+        validate: (input) => (input ? true : 'Please enter a valid host'),
+    });
+
+    const routeKeys = await getRouteKeys(host);
+
+    const routes: string[] = await checkbox({
+        choices: routeKeys,
+        message: 'Enter the routes you want to scrape:',
+        required: true,
+    });
+
+    return { host, routes, urlPattern: `${host}?p={{page}}` };
 };

@@ -4,19 +4,6 @@ import path from 'node:path';
 
 import logger from './utils/logger.js';
 
-const migrateLegacyPage = ({ body, title, ...page }: Page) => {
-    return {
-        ...page,
-        title,
-        ...(body &&
-            body !== title &&
-            !body.includes('Genre: Other') &&
-            !body.includes('albane') &&
-            !body.includes('bahet') &&
-            !body.includes('bhare') && { body }),
-    } as Page;
-};
-
 const findGaps = (pages: Page[]): number[] => {
     return pages.reduce((gaps: number[], currentPage, index, array) => {
         // If not the last page, check the gap with the next page
@@ -55,11 +42,7 @@ export const joinBooks = async (folder: string, metadata: Record<string, any>, o
     }
 
     Object.assign(combined, { ...lastMetadata, ...metadata });
-    combined.pages = combined.pages
-        //.filter((p) => p.body || !p.title || !p.title?.match(/^\d+$/))
-        //.filter((p) => p.body || !p.title || !p.title?.match(/^[a-zA-Z0-9_-]+$/))
-        //.map(migrateLegacyPage)
-        .toSorted((a, b) => a.page - b.page);
+    combined.pages = combined.pages.toSorted((a, b) => a.page - b.page);
 
     const missingPages = findGaps(combined.pages);
 

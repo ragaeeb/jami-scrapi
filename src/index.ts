@@ -7,7 +7,7 @@ import { URL } from 'node:url';
 import packageJson from '../package.json' assert { type: 'json' };
 import { joinBooks } from './joiner.js';
 import logger from './utils/logger.js';
-import { promptChoices, promptPostProcessor } from './utils/prompts.js';
+import { promptChoices, promptPostProcessor, promptWordpress } from './utils/prompts.js';
 import { scrape } from './utils/scraper.js';
 import { toSnakeCase } from './utils/textUtils.js';
 import { scrapeWordpress } from './utils/wordpress.js';
@@ -67,17 +67,14 @@ const main = async () => {
         const { inputFolder, outputFile } = await promptPostProcessor();
         await joinBooks(inputFolder, metadata, outputFile);
     } else if (action === 'wordpress') {
-        const host = await input({
-            message: 'Enter the host (ie: https://abc.com):',
-            required: true,
-            validate: (input) => (input ? true : 'Please enter a valid host'),
-        });
+        const { host, routes, urlPattern } = await promptWordpress();
 
         await scrapeWordpress({
             host,
             logger,
-            metadata: { ...metadata, urlPattern: `${host}?p={{url}}` },
+            metadata: { ...metadata, urlPattern },
             outputFile: path.format({ ext: '.json', name: new URL(host).host }),
+            routes,
         });
     }
 };
