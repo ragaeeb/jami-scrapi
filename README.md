@@ -5,6 +5,7 @@
 ![GitHub License](https://img.shields.io/github/license/ragaeeb/jami-scrapi)
 ![GitHub Release](https://img.shields.io/github/v/release/ragaeeb/jami-scrapi)
 ![typescript](https://badgen.net/badge/icon/typescript?icon=typescript&label&color=blue)
+![CodeRabbit Pull Request Reviews](https://img.shields.io/coderabbit/prs/github/ragaeeb/jami-scrapi?labelColor=171717&color=FF570A&link=https%3A%2F%2Fcoderabbit.ai&label=CodeRabbit%20Reviews)
 
 # Jami Scrapi
 
