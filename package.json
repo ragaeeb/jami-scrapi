@@ -1,7 +1,7 @@
 {
     "name": "jami-scrapi",
     "description": "Scraping CLI",
-    "version": "2.1.0",
+    "version": "2.2.0",
     "author": "Ragaeeb Haq",
     "license": "MIT",
     "private": false,
