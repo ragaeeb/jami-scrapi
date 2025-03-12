@@ -27,7 +27,7 @@ npx jami-scrapi
 
 Or
 
-````bash
+```bash
 bunx jami-scrapi
 ```
 
@@ -41,10 +41,10 @@ jami-scrapi
 
 The CLI will then prompt you to:
 
-1.  **Select a library**:  Choose the scraping library you want to use. Currently uses `bimbimba`.
-2.  **Select a function**:  Choose the specific scraping function you want to run from the selected library.
+1.  **Select a library**: Choose the scraping library you want to use. Currently uses `bimbimba`.
+2.  **Select a function**: Choose the specific scraping function you want to run from the selected library.
 3.  **Enter a start page**: Specify the page number to begin scraping from.
-4.  **Enter an end page**:  Specify the page number to stop scraping at.
+4.  **Enter an end page**: Specify the page number to stop scraping at.
 
 The scraped data will be saved to a JSON file in the current directory, named according to the library and function used (e.g., `library_function_name.json`).
 
@@ -82,4 +82,3 @@ Contributions are welcome! Feel free to submit pull requests or open issues to s
 This project is licensed under the MIT License. See the `LICENSE.MD` file for details.
 
 [![Built with Dokugen](https://img.shields.io/badge/Built%20with-Dokugen-brightgreen)](https://github.com/samueltuoyo15/Dokugen)
-````

@@ -1,42 +1,22 @@
-import eslint from '@eslint/js';
-import tseslint from '@typescript-eslint/eslint-plugin';
-import parser from '@typescript-eslint/parser';
+import pluginJs from '@eslint/js';
 import eslintConfigPrettier from 'eslint-config-prettier';
-import importPlugin from 'eslint-plugin-import';
 import perfectionist from 'eslint-plugin-perfectionist';
-import eslintPluginPrettier from 'eslint-plugin-prettier';
+import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
+import globals from 'globals';
+import tseslint from 'typescript-eslint';
 
+/** @type {import('eslint').Linter.Config[]} */
 export default [
     perfectionist.configs['recommended-natural'],
+    { files: ['**/*.{js,mjs,cjs,ts}'] },
+    { languageOptions: { ecmaVersion: 'latest', globals: globals.node } },
+    pluginJs.configs.recommended,
+    ...tseslint.configs.recommended,
+    eslintPluginPrettierRecommended,
+    eslintConfigPrettier,
     {
-        files: ['**/*.ts'],
-        languageOptions: {
-            ecmaVersion: 'latest',
-            globals: {
-                AbortController: 'readonly',
-                Atomics: 'readonly',
-                fetch: 'readonly',
-                SharedArrayBuffer: 'readonly',
-                WritableStream: 'readonly',
-            },
-            parser: parser,
-            sourceType: 'module',
-        },
-        plugins: {
-            '@typescript-eslint': tseslint,
-            import: importPlugin,
-            prettier: eslintPluginPrettier,
-        },
         rules: {
-            ...eslint.configs.recommended.rules,
-            ...tseslint.configs.recommended.rules,
-            ...eslintConfigPrettier.rules,
             '@typescript-eslint/no-explicit-any': 'off',
-            'prettier/prettier': ['error'],
-            radix: 'off',
         },
-    },
-    {
-        ignores: ['node_modules/**'],
     },
 ];
