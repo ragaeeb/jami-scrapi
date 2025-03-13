@@ -2,6 +2,7 @@ import { type Page } from 'bimbimba';
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
 
+import { ScrapeResult } from './types.js';
 import logger from './utils/logger.js';
 
 const findGaps = (pages: Page[]): number[] => {
@@ -27,7 +28,7 @@ export const joinBooks = async (folder: string, metadata: Record<string, any>, o
 
     logger.info(`Found ${files.length} files to merge`);
 
-    const combined: { pages: Page[]; timestamp: Date } = {
+    const combined: ScrapeResult = {
         pages: [],
         timestamp: new Date(),
     };

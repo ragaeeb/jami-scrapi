@@ -3,6 +3,8 @@ import type { Page } from 'bimbimba';
 import { setTimeout } from 'node:timers/promises';
 import { type Logger as PinoLogger } from 'pino';
 
+import type { ScrapeResult } from '../types.js';
+
 import { ProgressSaver } from './progressSaver.js';
 import { getRandomInt } from './random.js';
 
@@ -18,8 +20,8 @@ type ScrapeProps = {
 export const scrape = async ({ delay, func, logger, metadata, outputFile, pageNumbers }: ScrapeProps) => {
     const pages: Page[] = [];
 
-    const progressSaver = new ProgressSaver({
-        getData: () => ({ metadata, pages: pages.toSorted((a, b) => a.page - b.page) }),
+    const progressSaver = new ProgressSaver<Partial<ScrapeResult>>({
+        getData: () => ({ ...metadata, pages: pages.toSorted((a, b) => a.page - b.page) }),
         logger,
         outputFile,
     });

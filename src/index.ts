@@ -6,6 +6,7 @@ import { URL } from 'node:url';
 
 import packageJson from '../package.json' assert { type: 'json' };
 import { joinBooks } from './joiner.js';
+import { transform } from './transformer.js';
 import logger from './utils/logger.js';
 import { promptChoices, promptPostProcessor, promptWordpress } from './utils/prompts.js';
 import { scrape } from './utils/scraper.js';
@@ -57,6 +58,7 @@ const main = async () => {
             { name: 'Scrape Wordpress site', value: 'wordpress' },
             { name: 'Scrape from bimbimba', value: 'bimbimba' },
             { name: 'Post-process scraped data', value: 'post-process' },
+            { name: 'Transform a scraped session', value: 'transformer' },
         ],
         message: 'What do you want to do?',
     });
@@ -76,6 +78,8 @@ const main = async () => {
             outputFile: path.format({ ext: '.json', name: new URL(host).host }),
             routes,
         });
+    } else if (action === 'transformer') {
+        await transform();
     }
 };
 
