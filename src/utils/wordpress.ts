@@ -1,9 +1,8 @@
 import { getJSON, type Page } from 'bimbimba';
 import { removeUrls } from 'bitaboom';
+import { CatsaJanga, type Logger } from 'catsa-janga';
 import { load } from 'cheerio';
 import { URL, URLSearchParams } from 'node:url';
-
-import { ProgressSaver, type SubLogger } from './progressSaver.js';
 
 type PostResponse = {
     content: { rendered: string };
@@ -44,7 +43,7 @@ const getWordpressContent = async (host: string, endpoint: string, offset: numbe
 
 type ScrapeWordpressProps = {
     host: string;
-    logger: SubLogger;
+    logger: Logger;
     metadata?: Record<string, any>;
     outputFile: string;
     routes: string[];
@@ -53,7 +52,7 @@ type ScrapeWordpressProps = {
 export const scrapeWordpress = async ({ host, logger, metadata, outputFile, routes }: ScrapeWordpressProps) => {
     let pages: Page[] = [];
 
-    const progressSaver = new ProgressSaver({
+    const progressSaver = new CatsaJanga({
         getData: () => ({ ...metadata, pages: pages.toSorted((a, b) => a.page - b.page) }),
         logger,
         outputFile,
