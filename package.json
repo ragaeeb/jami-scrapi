@@ -1,7 +1,7 @@
 {
     "name": "jami-scrapi",
     "description": "Scraping CLI",
-    "version": "2.4.0",
+    "version": "2.4.1",
     "author": "Ragaeeb Haq",
     "license": "MIT",
     "private": false,
@@ -16,6 +16,7 @@
         "url": "git+https://github.com/ragaeeb/jami-scrapi.git"
     },
     "engines": {
+        "bun": ">=1.2.10",
         "node": ">=23.0.0"
     },
     "files": [
@@ -31,21 +32,22 @@
         "scraping"
     ],
     "devDependencies": {
-        "@eslint/js": "^9.22.0",
-        "@types/node": "^22.13.10",
-        "eslint": "^9.22.0",
-        "eslint-config-prettier": "^10.1.1",
-        "eslint-plugin-perfectionist": "^4.10.1",
-        "eslint-plugin-prettier": "^5.2.3",
+        "@eslint/js": "^9.24.0",
+        "@types/node": "^22.14.1",
+        "eslint": "^9.24.0",
+        "eslint-config-prettier": "^10.1.2",
+        "eslint-plugin-perfectionist": "^4.11.0",
+        "eslint-plugin-prettier": "^5.2.6",
         "prettier": "^3.5.3",
         "semantic-release": "^24.2.3",
-        "typescript-eslint": "^8.26.1",
-        "vitest": "^3.0.8"
+        "typescript-eslint": "^8.30.1",
+        "vitest": "^3.1.1"
     },
     "dependencies": {
-        "@inquirer/prompts": "^7.3.3",
+        "@inquirer/prompts": "^7.4.1",
         "bimbimba": "latest",
-        "bitaboom": "^1.1.0",
+        "bitaboom": "^1.1.1",
+        "catsa-janga": "^1.0.1",
         "cli-welcome": "^3.0.1",
         "pino": "^9.6.0",
         "pino-pretty": "^13.0.0"

@@ -1,11 +1,11 @@
 import type { Page } from 'bimbimba';
 
+import { CatsaJanga } from 'catsa-janga';
 import { setTimeout } from 'node:timers/promises';
 import { type Logger as PinoLogger } from 'pino';
 
 import type { ScrapeResult } from '../types.js';
 
-import { ProgressSaver } from './progressSaver.js';
 import { getRandomInt } from './random.js';
 
 type ScrapeProps = {
@@ -20,7 +20,7 @@ type ScrapeProps = {
 export const scrape = async ({ delay, func, logger, metadata, outputFile, pageNumbers }: ScrapeProps) => {
     const pages: Page[] = [];
 
-    const progressSaver = new ProgressSaver<Partial<ScrapeResult>>({
+    const progressSaver = new CatsaJanga<Partial<ScrapeResult>>({
         getData: () => ({ ...metadata, pages: pages.toSorted((a, b) => a.page - b.page) }),
         logger,
         outputFile,
