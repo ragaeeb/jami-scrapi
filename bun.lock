@@ -309,7 +309,7 @@
 
     "before-after-hook": ["before-after-hook@3.0.2", "", {}, "sha512-Nik3Sc0ncrMK4UUdXQmAnRtzmNQTAAXmXIopizwZ1W1t8QmfJj+zL4OA2I7XPTPW5z5TDqv4hRo/JzouDJnX3A=="],
 
-    "bimbimba": ["bimbimba@0.10.0", "", { "dependencies": { "cheerio": "^1.0.0", "iconv-lite": "^0.6.3", "wretch": "^2.11.0" } }, "sha512-OgVU3qmfG1Oyv0nUKu+4d2vwak9PDentTr9PvqPaTNHuFkrDjTQb1YJpBlHYHfzZNplNpdG1NW3gD53Mj9cDaQ=="],
+    "bimbimba": ["bimbimba@0.10.1", "", { "dependencies": { "cheerio": "^1.0.0", "iconv-lite": "^0.6.3", "wretch": "^2.11.0" } }, "sha512-OQJJuA3JhORbEwEDRGZJMw9PmhrgA/muZB1pqJ0Vc3eE5mYj4bTKOs6HYcG9BISQKBSoeTHq0NJb2Voxxma6BQ=="],
 
     "bitaboom": ["bitaboom@1.1.1", "", {}, "sha512-uEn7WlVnlKzRvYODCklCGDFfltXbWFM64cdSbI+Wjj05Z5n1z5ahpNLaNPZYLkv5kij3vkNUD7vUZExqu9+0Dw=="],
 
