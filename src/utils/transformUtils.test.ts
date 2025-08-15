@@ -1,6 +1,6 @@
 import type { Page } from 'bimbimba';
 
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it } from 'bun:test';
 
 import { groupPagesByFields, mapPagesToGroupingFields, transformPage } from './transformUtils';
 

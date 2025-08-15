@@ -1,5 +1,6 @@
 import { checkbox, input, select } from '@inquirer/prompts';
-import { availableScrapers, getScraper, listFunctions } from 'bimbimba';
+import { availableScrapers, customScrapers, getScraper, listFunctions } from 'bimbimba';
+import { parsePageRanges } from 'bitaboom';
 import fs from 'node:fs';
 
 import { PageFetcher } from '../types.js';
@@ -14,28 +15,17 @@ type PromptChoicesResult = {
     pageNumbers: number[];
 };
 
-const parsePageRanges = (pageInput: string): number[] => {
-    if (pageInput.includes('-')) {
-        const [start, end] = pageInput.split('-').map(Number);
-
-        if (start > end) {
-            throw new Error('Start page cannot be greater than end page');
-        }
-
-        return Array.from({ length: end - start + 1 }, (_, i) => start + i);
-    } else {
-        return pageInput.split(',').map(Number);
-    }
-};
-
 export const promptChoices = async (): Promise<PromptChoicesResult> => {
+    const allScrapers = availableScrapers.concat(customScrapers).sort();
+
     const library: string = await select({
-        choices: availableScrapers.toSorted(),
+        choices: allScrapers,
         message: 'Select library',
-        pageSize: availableScrapers.length,
+        pageSize: allScrapers.length,
     });
 
     const module = await getScraper(library);
+    // eslint-disable-next-line prefer-const
     let [func, ...functions] = listFunctions(module);
 
     if (functions.length > 0) {

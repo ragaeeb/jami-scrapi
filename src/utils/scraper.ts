@@ -10,7 +10,7 @@ import { getRandomInt } from './random.js';
 
 type ScrapeProps = {
     delay: number;
-    func(page: number): Promise<Page>;
+    func(page: number): Promise<Page | Page[]>;
     logger: Pick<PinoLogger, 'error' | 'info' | 'warn'>;
     metadata?: Record<string, any>;
     outputFile: string;
@@ -33,7 +33,11 @@ export const scrape = async ({ delay, func, logger, metadata, outputFile, pageNu
             logger.info(`Downloading page ${pageNumber}`);
             const page = await func(pageNumber);
 
-            pages.push({ accessed: new Date(), ...page });
+            if (Array.isArray(page)) {
+                pages.push(...page);
+            } else {
+                pages.push({ accessed: new Date(), ...page });
+            }
 
             if (delay) {
                 await setTimeout(delay * 1000);
