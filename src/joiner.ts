@@ -1,8 +1,8 @@
-import { type Page } from 'bimbimba';
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
+import type { Page } from 'bimbimba';
 
-import { ScrapeResult } from './types.js';
+import type { ScrapeResult } from './types.js';
 import logger from './utils/logger.js';
 
 const findGaps = (pages: Page[]): number[] => {

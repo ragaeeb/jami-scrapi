@@ -1,8 +1,8 @@
+import { URL, URLSearchParams } from 'node:url';
 import { getJSON, type Page } from 'bimbimba';
 import { removeUrls } from 'bitaboom';
 import { CatsaJanga, type Logger } from 'catsa-janga';
 import { load } from 'cheerio';
-import { URL, URLSearchParams } from 'node:url';
 
 type PostResponse = {
     content: { rendered: string };

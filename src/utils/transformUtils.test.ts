@@ -1,6 +1,5 @@
-import type { Page } from 'bimbimba';
-
 import { describe, expect, it } from 'bun:test';
+import type { Page } from 'bimbimba';
 
 import { groupPagesByFields, mapPagesToGroupingFields, transformPage } from './transformUtils';
 
@@ -30,11 +29,11 @@ describe('transformUtils', () => {
             const actual = groupPagesByFields(pages as Page[], ['author', 'book'], '_');
             expect(actual).toEqual({
                 '': [{ page: 4 }],
-                A0_B1: [{ metadata: { author: 'A0', book: 'B1' }, page: 2 }],
                 A_B: [
                     { metadata: { author: 'A', book: 'B' }, page: 1 },
                     { metadata: { author: 'A', book: 'B', chapter: 'C', page: 3 } },
                 ],
+                A0_B1: [{ metadata: { author: 'A0', book: 'B1' }, page: 2 }],
             });
         });
     });

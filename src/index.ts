@@ -1,10 +1,11 @@
 #!/usr/bin/env bun
-import { input, select } from '@inquirer/prompts';
-import welcome from 'cli-welcome';
 import path from 'node:path';
 import { URL } from 'node:url';
+import { input, select } from '@inquirer/prompts';
+import welcome from 'cli-welcome';
 
-import packageJson from '../package.json' assert { type: 'json' };
+import packageJson from '../package.json' with { type: 'json' };
+
 import { joinBooks } from './joiner.js';
 import { transform } from './transformer.js';
 import logger from './utils/logger.js';

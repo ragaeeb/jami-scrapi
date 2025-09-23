@@ -1,7 +1,7 @@
-import { checkbox, confirm, input, select } from '@inquirer/prompts';
-import { Page } from 'bimbimba';
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
+import { checkbox, confirm, input, select } from '@inquirer/prompts';
+import type { Page } from 'bimbimba';
 
 import type { ScrapeResult } from './types.js';
 

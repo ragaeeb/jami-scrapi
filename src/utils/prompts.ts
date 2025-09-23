@@ -1,9 +1,9 @@
+import fs from 'node:fs';
 import { checkbox, input, select } from '@inquirer/prompts';
 import { availableScrapers, customScrapers, getScraper, listFunctions } from 'bimbimba';
 import { parsePageRanges } from 'bitaboom';
-import fs from 'node:fs';
 
-import { PageFetcher } from '../types.js';
+import type { PageFetcher } from '@/types.js';
 import { sanitizeInput } from './textUtils.js';
 import { getRouteKeys } from './wordpress.js';
 
@@ -43,22 +43,20 @@ export const promptChoices = async (): Promise<PromptChoicesResult> => {
     });
 
     const pageNumbers = parsePageRanges(ranges);
+    const delayValue = await input({
+        default: '0',
+        message: 'Enter delay in seconds between requests:',
+        required: false,
+        validate: (page) => {
+            if (!/\d+/.test(page)) {
+                return 'Please enter a valid delay in seconds';
+            }
 
-    const delay =
-        parseInt(
-            await input({
-                default: '0',
-                message: 'Enter delay in seconds between requests:',
-                required: false,
-                validate: (page) => {
-                    if (!/\d+/.test(page)) {
-                        return 'Please enter a valid delay in seconds';
-                    }
+            return true;
+        },
+    });
 
-                    return true;
-                },
-            }),
-        ) || 0;
+    const delay = parseInt(delayValue, 10) || 0;
 
     return { delay, func: module[func], functionName: func, library, pageNumbers };
 };

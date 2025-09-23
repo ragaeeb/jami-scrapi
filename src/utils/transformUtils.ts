@@ -42,7 +42,7 @@ export const transformPage = (page: Page, groupingFields: string[], partField?: 
     }
 
     if (partField) {
-        updatedPage.part = parseInt(metadata[partField].replace(/\D+/, ''));
+        updatedPage.part = parseInt(metadata[partField].replace(/\D+/, ''), 10);
 
         if (removePartField) {
             delete metadata[partField];

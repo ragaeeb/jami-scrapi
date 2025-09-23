@@ -1,8 +1,7 @@
-import type { Page } from 'bimbimba';
-
-import { CatsaJanga } from 'catsa-janga';
 import { setTimeout } from 'node:timers/promises';
-import { type Logger as PinoLogger } from 'pino';
+import type { Page } from 'bimbimba';
+import { CatsaJanga } from 'catsa-janga';
+import type { Logger as PinoLogger } from 'pino';
 
 import type { ScrapeResult } from '../types.js';
 

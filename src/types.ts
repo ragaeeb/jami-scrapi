@@ -1,4 +1,4 @@
-import { Page } from 'bimbimba';
+import type { Page } from 'bimbimba';
 
 export type PageFetcher = (page: number) => Promise<Page>;
 
