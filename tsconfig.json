@@ -3,7 +3,6 @@
         "declaration": true,
         "esModuleInterop": true,
         "forceConsistentCasingInFileNames": true,
-        "isolatedDeclarations": true,
         "isolatedModules": true,
         "module": "NodeNext",
         "moduleResolution": "nodenext",

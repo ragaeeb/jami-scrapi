@@ -37,7 +37,8 @@ export const findGaps = (pages: Page[]): number[] => {
 export const joinBooks = async (folder: string, metadata: Record<string, any>, outputFile: string) => {
     const files = (await fs.readdir(folder))
         .filter((file) => file.endsWith('.json'))
-        .map((file) => path.join(folder, file));
+        .map((file) => path.join(folder, file))
+        .sort();
 
     logger.info(`Found ${files.length} files to merge`);
 
