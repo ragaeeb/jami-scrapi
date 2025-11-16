@@ -14,6 +14,12 @@ import { scrape } from './utils/scraper.js';
 import { toSnakeCase } from './utils/textUtils.js';
 import { scrapeWordpress } from './utils/wordpress.js';
 
+/**
+ * Prompts the user for the required scraping inputs and kicks off a Bimbimba scraping session.
+ *
+ * @param metadata - Additional metadata to be attached to the scraping session output.
+ * @returns The persisted scrape result path once the scraping completes.
+ */
 const scrapeFromBimbimba = async (metadata: Record<string, any>) => {
     const { delay, func, functionName, library, pageNumbers } = await promptChoices();
     const urlPattern = await input({
@@ -37,6 +43,10 @@ const scrapeFromBimbimba = async (metadata: Record<string, any>) => {
     });
 };
 
+/**
+ * Entry point for the CLI.
+ * Presents the available actions and delegates to the appropriate workflow based on the selection.
+ */
 const main = async () => {
     welcome({
         bgColor: `#FADC00`,

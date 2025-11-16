@@ -15,6 +15,11 @@ type PromptChoicesResult = {
     pageNumbers: number[];
 };
 
+/**
+ * Walks the user through selecting a scraper, function and pagination strategy.
+ *
+ * @returns The resolved scraper metadata used to kick off a scraping session.
+ */
 export const promptChoices = async (): Promise<PromptChoicesResult> => {
     const allScrapers = availableScrapers.concat(customScrapers).sort();
 
@@ -61,6 +66,11 @@ export const promptChoices = async (): Promise<PromptChoicesResult> => {
     return { delay, func: module[func], functionName: func, library, pageNumbers };
 };
 
+/**
+ * Captures the folder to join and the output file for the joiner workflow.
+ *
+ * @returns The normalised input folder and output file path.
+ */
 export const promptPostProcessor = async () => {
     const inputFolder = await input({
         message: 'Enter the folder:',
@@ -89,6 +99,11 @@ export const promptPostProcessor = async () => {
     return { inputFolder: inputFolder.trim(), outputFile: outputFile.trim() };
 };
 
+/**
+ * Captures the WordPress host and route filters for a scrape run.
+ *
+ * @returns The host, selected routes and a default URL pattern.
+ */
 export const promptWordpress = async () => {
     const host = await input({
         message: 'Enter the host (ie: https://abc.com):',

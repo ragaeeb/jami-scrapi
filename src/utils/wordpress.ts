@@ -12,6 +12,15 @@ type PostResponse = {
     title: { rendered: string };
 };
 
+/**
+ * Fetches a page of posts from a WordPress site and normalises it into the shared Page structure.
+ *
+ * @param host - WordPress host to query.
+ * @param endpoint - Route segment underneath `/wp-json/wp/v2`.
+ * @param offset - Offset to request.
+ * @param limit - Number of records to fetch.
+ * @returns The normalised page list for the requested slice.
+ */
 const getWordpressContent = async (host: string, endpoint: string, offset: number, limit: number): Promise<Page[]> => {
     const url = new URL(`${host}/wp-json/wp/v2/${endpoint}`);
     url.search = new URLSearchParams({ offset: offset.toString(), per_page: limit.toString() }).toString();
@@ -49,6 +58,16 @@ type ScrapeWordpressProps = {
     routes: string[];
 };
 
+/**
+ * Scrapes a WordPress site for the provided set of routes.
+ *
+ * @param host - Hostname of the WordPress site.
+ * @param logger - Logger used to emit progress output.
+ * @param metadata - Metadata to attach to the persisted scrape result.
+ * @param outputFile - File path to persist the scrape progress.
+ * @param routes - WordPress routes to fetch.
+ * @returns The accumulated pages that were scraped.
+ */
 export const scrapeWordpress = async ({ host, logger, metadata, outputFile, routes }: ScrapeWordpressProps) => {
     let pages: Page[] = [];
 
@@ -120,6 +139,12 @@ const STANDARD_ROUTES = [
     '/wp/v2/font-collections',
 ];
 
+/**
+ * Discovers relevant WordPress routes for scraping and filters out noisy endpoints.
+ *
+ * @param host - Hostname of the WordPress site.
+ * @returns A sorted list of route keys that represent meaningful content endpoints.
+ */
 export const getRouteKeys = async (host: string) => {
     const noise = new Set(STANDARD_ROUTES);
 
