@@ -90,7 +90,7 @@ bun run lint
 
 ## Requirements
 
-- **Bun v1.2.14+**
+- **Bun v1.3.2+**
 - **Node.js v22+**
 
 ## Contributing
