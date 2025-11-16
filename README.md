@@ -9,76 +9,96 @@
 
 # Jami Scrapi
 
-A command-line tool for web scraping, designed for ease of use and flexibility. It leverages [bimbimba](some_bimbimba_link_eventually) to provide a straightforward interface for extracting data from websites.
+A batteries-included scraping CLI that turns Bimbimba scrapers and WordPress APIs into portable JSON datasets. Jami Scrapi guides you through every step – from picking a scraper to transforming the harvested pages – while automatically persisting progress so interrupted runs can resume safely.
+
+## Features
+
+- **Interactive scraper orchestration** – choose any Bimbimba library/function, provide page ranges, and let the CLI orchestrate the run.
+- **WordPress session harvesting** – discover available `/wp-json/wp/v2` routes, fetch posts in batches, and clean their HTML payloads.
+- **Joiner workflow** – merge multiple scrape artefacts, highlight missing page gaps, and emit a consolidated JSON file.
+- **Transformer workflow** – regroup pages by metadata, extract part numbers, and write grouped collections to disk.
+- **Resilient downloader** – auto retries on transient server errors with jittered backoff and logs detailed progress.
+- **TypeScript definitions** – generated during builds to keep downstream projects strongly typed.
 
 ## Installation
 
-Ensure you have Bun installed. If not, you can install it following the instructions on the [Bun website](https://bun.sh/).
+Ensure you have [Bun](https://bun.sh/) installed.
 
 ```bash
 bun install -g jami-scrapi
 ```
 
-Or
+Or run it ad-hoc:
 
 ```bash
 npx jami-scrapi
-```
-
-Or
-
-```bash
+# or
 bunx jami-scrapi
 ```
 
 ## Usage
 
-After installation, you can run the `jami-scrapi` command in your terminal.
+Launch the CLI from your terminal:
 
 ```bash
 jami-scrapi
 ```
 
-The CLI will then prompt you to:
+You will be prompted to select one of the following actions:
 
-1.  **Select a library**: Choose the scraping library you want to use. Currently uses `bimbimba`.
-2.  **Select a function**: Choose the specific scraping function you want to run from the selected library.
-3.  **Enter a start page**: Specify the page number to begin scraping from.
-4.  **Enter an end page**: Specify the page number to stop scraping at.
+1. **Scrape WordPress site** – choose a WordPress host, pick the discovered content routes, and export every record to JSON.
+2. **Scrape from bimbimba** – select a Bimbimba scraper and function, define page ranges, and download each page with optional delay.
+3. **Post-process scraped data** – merge multiple session files into a single archive using the joiner.
+4. **Transform a scraped session** – regroup an existing scrape by metadata fields and split it into logical collections.
 
-The scraped data will be saved to a JSON file in the current directory, named according to the library and function used (e.g., `library_function_name.json`).
+Each workflow asks for the minimal amount of information required, sanitises your input, and writes the output file in the current directory. Progress is logged with timestamps so that long-running scrapes can be monitored easily.
 
-Example:
+### Advanced workflows
+
+- **Joining artefacts** – when you choose _Post-process scraped data_, the CLI validates the folder, consolidates every `*.json` file, sorts the resulting pages, and warns you about missing page gaps before writing the combined result.
+- **Transforming sessions** – the transformer inspects metadata to suggest grouping fields, optionally extracts numeric `part` identifiers, and emits one JSON file per group in a dedicated folder.
+- **WordPress scraping** – results are cleaned of embedded scripts and noisy characters, URLs are stripped from bodies, and runs are persisted incrementally via `catsa-janga` so they can resume if interrupted.
+
+## Development
+
+Install dependencies:
 
 ```bash
-jami-scrapi
+bun install
 ```
 
-```
-? Select library:  exampleScraper
-? Select function: getPage
-? Enter page to start at: 1
-? Enter page to end at: 5
+Bundle the CLI (via the official `tsdown` CLI and `tsdown.config.ts`):
+
+```bash
+bun run build
 ```
 
-This will scrape pages 1 through 5 using the `getPage` function from the exampleScraper library and save the results to `example_scraper_get_page.json`.
+This produces `dist/index.mjs` plus the matching `dist/index.d.mts` typings consumed by downstream projects.
+
+Run the unit test suite:
+
+```bash
+bun test
+```
+
+Format and lint the codebase:
+
+```bash
+bun run format
+bun run lint
+```
 
 ## Requirements
 
-- **Node.js v23.0.0+**
+- **Bun v1.3.2+**
+- **Node.js v22+**
 
 ## Contributing
 
-Contributions are welcome! Feel free to submit pull requests or open issues to suggest improvements or report bugs.
-
-1.  Fork the repository.
-2.  Create a new branch for your feature or bug fix.
-3.  Make your changes and commit them with descriptive messages.
-4.  Push your changes to your fork.
-5.  Submit a pull request to the main branch of the original repository.
+Contributions are welcome! Please open an issue or pull request describing the improvement or bug fix you would like to tackle.
 
 ## License
 
-This project is licensed under the MIT License. See the `LICENSE.MD` file for details.
+This project is licensed under the MIT License. See [`LICENSE.MD`](./LICENSE.MD) for details.
 
 [![Built with Dokugen](https://img.shields.io/badge/Built%20with-Dokugen-brightgreen)](https://github.com/samueltuoyo15/Dokugen)

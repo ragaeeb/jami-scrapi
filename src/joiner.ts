@@ -5,7 +5,13 @@ import type { Page } from 'bimbimba';
 import type { ScrapeResult } from './types.js';
 import logger from './utils/logger.js';
 
-const findGaps = (pages: Page[]): number[] => {
+/**
+ * Calculates the missing page numbers inside a sorted collection of pages.
+ *
+ * @param pages - The ordered list of pages to inspect for gaps.
+ * @returns A list of page numbers that are missing from the provided sequence.
+ */
+export const findGaps = (pages: Page[]): number[] => {
     return pages.reduce((gaps: number[], currentPage, index, array) => {
         // If not the last page, check the gap with the next page
         if (index < array.length - 1) {
@@ -21,10 +27,18 @@ const findGaps = (pages: Page[]): number[] => {
     }, [] as number[]);
 };
 
+/**
+ * Merges the scraped JSON artefacts stored inside a folder into a single consolidated file.
+ *
+ * @param folder - Directory containing the JSON artefacts to merge.
+ * @param metadata - Metadata that should be merged with the final scrape result.
+ * @param outputFile - Destination file for the combined scrape output.
+ */
 export const joinBooks = async (folder: string, metadata: Record<string, any>, outputFile: string) => {
     const files = (await fs.readdir(folder))
         .filter((file) => file.endsWith('.json'))
-        .map((file) => path.join(folder, file));
+        .map((file) => path.join(folder, file))
+        .sort();
 
     logger.info(`Found ${files.length} files to merge`);
 

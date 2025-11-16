@@ -14,10 +14,33 @@ type ScrapeProps = {
     metadata?: Record<string, any>;
     outputFile: string;
     pageNumbers: number[];
+    randomInt?: typeof getRandomInt;
 };
 
-export const scrape = async ({ delay, func, logger, metadata, outputFile, pageNumbers }: ScrapeProps) => {
+/**
+ * Iterates through the requested page numbers and persists the progress of the scrape to disk.
+ *
+ * @param delay - Delay in seconds between page fetches.
+ * @param func - Scraper function capable of fetching a page.
+ * @param logger - Logger used to emit progress and error information.
+ * @param metadata - Metadata to include with persisted results.
+ * @param outputFile - File location where progress snapshots should be written.
+ * @param pageNumbers - List of page numbers to scrape.
+ * @param randomInt - Optional RNG used to determine retry backoff delays (defaults to `getRandomInt`).
+ * @returns The final persisted scrape result as returned by the progress saver.
+ */
+export const scrape = async ({
+    delay,
+    func,
+    logger,
+    metadata,
+    outputFile,
+    pageNumbers,
+    randomInt,
+}: ScrapeProps) => {
     const pages: Page[] = [];
+
+    const pickRandomInt = randomInt ?? getRandomInt;
 
     const progressSaver = new CatsaJanga<Partial<ScrapeResult>>({
         getData: () => ({ ...metadata, pages: pages.toSorted((a, b) => a.page - b.page) }),
@@ -45,7 +68,7 @@ export const scrape = async ({ delay, func, logger, metadata, outputFile, pageNu
             if (err.cause === 404) {
                 logger.warn(`Page ${pageNumber} not found`);
             } else if (err.status >= 500 && err.status <= 502) {
-                const backoffDelay = getRandomInt(60, 240);
+                const backoffDelay = pickRandomInt(60, 240);
                 logger.error(`${err.status} code detected. Delaying for ${backoffDelay} seconds...`);
                 i--;
                 await setTimeout(backoffDelay * 1000);
